@@ -698,7 +698,7 @@
                     </div>
 
                         <!-- Panel FUD -->
-                        <div id="panel-port-fud" class="hidden flex-1 flex flex-col overflow-hidden">
+                        <div id="panel-port-fud" class="hidden flex-1 flex flex-col overflow-hidden min-h-0">
                             <div class="px-5 pt-4 pb-3 border-b border-slate-100 flex items-center justify-between shrink-0">
                                 <div>
                                     <p class="text-xs font-bold text-slate-700">Portafolio Variable (FUD)</p>
@@ -712,20 +712,20 @@
                                 <div class="bg-green-50 border border-green-100 rounded-lg p-3 text-center"><p class="text-[9px] text-green-700 font-bold uppercase mb-1">Activables</p><p class="text-sm font-black text-green-800">$23.2M</p></div>
                             </div>
                             <div class="px-5 pb-3 shrink-0">
-                                <div onclick="document.getElementById('file-upload-fud').click()" class="border-2 border-dashed border-teal-300 rounded-xl bg-teal-50/40 flex items-center justify-center py-4 px-6 gap-4 cursor-pointer hover:border-teal-500 hover:bg-teal-50 transition-colors relative">
+                                <div onclick="document.getElementById('file-upload-fud').click()" class="border-2 border-dashed border-teal-300 rounded-xl bg-teal-50/40 flex items-center justify-center py-3 px-6 gap-4 cursor-pointer hover:border-teal-500 hover:bg-teal-50 transition-colors relative">
                                     <input type="file" id="file-upload-fud" class="hidden" accept=".xlsx,.xls,.csv" onchange="simFudUpload(this)">
                                     <div id="fud-loading" class="hidden absolute inset-0 bg-white/90 rounded-xl flex items-center justify-center gap-2"><i class="ph ph-spinner animate-spin text-teal-600 text-xl"></i><p class="text-xs font-medium text-teal-700">Procesando FUD...</p></div>
-                                    <i class="ph ph-upload-simple text-2xl text-teal-500"></i>
-                                    <div><p class="text-xs font-bold text-teal-800">Cargar actualización FUD</p><p class="text-[10px] text-teal-600">Arrastra o haz clic · .xlsx / .csv</p></div>
+                                    <i class="ph ph-upload-simple text-xl text-teal-500"></i>
+                                    <div><p class="text-xs font-bold text-teal-800">Cargar actualización FUD</p><p class="text-[10px] text-teal-600">Haz clic · .xlsx / .csv</p></div>
                                 </div>
                             </div>
-                            <div class="flex-1 overflow-auto border-t border-slate-100">
-                                <div class="px-3 py-2 bg-slate-50 border-b border-slate-100 flex gap-2 items-center">
+                            <div class="flex-1 overflow-auto border-t border-slate-100 min-h-0">
+                                <div class="px-3 py-2 bg-slate-50 border-b border-slate-100 flex gap-2 items-center sticky top-0 z-10">
                                     <div class="relative flex-1"><i class="ph ph-magnifying-glass absolute left-2 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i><input type="text" id="filter-fud-search" onkeyup="filterFud()" placeholder="Buscar cliente o FUD ID..." class="pl-6 w-full text-[11px] border border-slate-200 rounded py-1"></div>
                                     <select id="filter-fud-estado" onchange="filterFud()" class="text-[11px] border border-slate-200 rounded py-1"><option value="Todos">Todos</option><option value="Activable">Activable</option><option value="Negociación">Negociación</option><option value="Bloqueado">Bloqueado</option></select>
                                 </div>
                                 <table class="w-full text-[11px] text-left whitespace-nowrap">
-                                    <thead class="bg-white text-slate-500 font-medium sticky top-0 border-b border-slate-200 z-10"><tr><th class="px-3 py-2">FUD ID</th><th class="px-3 py-2">Cliente</th><th class="px-3 py-2">Servicio</th><th class="px-3 py-2 text-right">Monto</th><th class="px-3 py-2 text-center">Estado</th><th class="px-3 py-2">Vencimiento</th></tr></thead>
+                                    <thead class="bg-white text-slate-500 font-medium border-b border-slate-200"><tr><th class="px-3 py-2">FUD ID</th><th class="px-3 py-2">Cliente</th><th class="px-3 py-2">Servicio</th><th class="px-3 py-2 text-right">Monto</th><th class="px-3 py-2 text-center">Estado</th><th class="px-3 py-2">Vencimiento</th></tr></thead>
                                     <tbody id="tbody-fud" class="divide-y divide-slate-100"></tbody>
                                 </table>
                             </div>
@@ -965,29 +965,53 @@
 
                 <!-- KPIs Control Cards -->
                 <div class="grid grid-cols-2 lg:grid-cols-5 gap-4 mb-6 shrink-0">
-                    <div class="bg-white border border-slate-200 rounded-xl p-4 shadow-sm relative overflow-hidden">
-                        <div class="absolute -right-4 -top-4 w-16 h-16 bg-slate-50 rounded-full"></div>
+                    <div onclick="openProvDrawer('portafolio')" class="bg-white border border-slate-200 rounded-xl p-4 shadow-sm relative overflow-hidden cursor-pointer hover:shadow-md hover:border-indigo-300 hover:-translate-y-0.5 transition-all group">
+                        <div class="absolute -right-4 -top-4 w-16 h-16 bg-indigo-50 rounded-full group-hover:bg-indigo-100 transition-colors"></div>
+                        <i class="ph ph-arrow-square-out absolute top-2 right-2 text-slate-300 group-hover:text-indigo-400 text-xs transition-colors"></i>
                         <p class="text-xs text-slate-500 font-medium mb-1">Total Esperado (Portafolio)</p>
                         <p class="text-lg font-bold text-slate-800">$215,845,120.00</p>
+                        <p class="text-[10px] text-slate-400 mt-1">Base de cálculo</p>
                     </div>
-                    <div class="bg-white border border-slate-200 rounded-xl p-4 shadow-sm border-l-4 border-l-indigo-500">
+                    <div onclick="openProvDrawer('provisionar')" class="bg-white border border-slate-200 rounded-xl p-4 shadow-sm border-l-4 border-l-indigo-500 cursor-pointer hover:shadow-md hover:border-indigo-300 hover:-translate-y-0.5 transition-all group relative">
+                        <i class="ph ph-arrow-square-out absolute top-2 right-2 text-slate-300 group-hover:text-indigo-400 text-xs transition-colors"></i>
                         <p class="text-xs text-slate-500 font-medium mb-1">Total a Provisionar</p>
                         <p class="text-lg font-bold text-indigo-700">$42,658,420.15</p>
+                        <p class="text-[10px] text-indigo-400 mt-1 flex items-center gap-1"><i class="ph ph-trend-up"></i>19.76% del portafolio</p>
                     </div>
-                    <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 shadow-sm flex flex-col justify-center">
-                        <p class="text-xs text-slate-500 font-medium mb-1 flex items-center justify-between">Diferencia 
+                    <div onclick="openProvDrawer('diferencia')" class="bg-slate-50 border border-slate-200 rounded-xl p-4 shadow-sm flex flex-col justify-center cursor-pointer hover:shadow-md hover:border-green-300 hover:-translate-y-0.5 transition-all group relative">
+                        <i class="ph ph-arrow-square-out absolute top-2 right-2 text-slate-300 group-hover:text-green-400 text-xs transition-colors"></i>
+                        <p class="text-xs text-slate-500 font-medium mb-1 flex items-center justify-between">Diferencia
                             <span class="text-[10px] bg-slate-200 px-1.5 rounded font-bold text-slate-600">0.00%</span>
                         </p>
                         <p class="text-lg font-bold text-slate-800">$0.00</p>
+                        <p class="text-[10px] text-green-600 mt-1">✓ Dentro del umbral</p>
                     </div>
-                    <div class="bg-white border border-slate-200 rounded-xl p-4 shadow-sm">
+                    <div onclick="openProvDrawer('candidatos')" class="bg-white border border-slate-200 rounded-xl p-4 shadow-sm cursor-pointer hover:shadow-md hover:border-amber-300 hover:-translate-y-0.5 transition-all group relative">
+                        <i class="ph ph-arrow-square-out absolute top-2 right-2 text-slate-300 group-hover:text-amber-400 text-xs transition-colors"></i>
                         <p class="text-xs text-slate-500 font-medium mb-1 flex items-center gap-1"><i class="ph ph-magic-wand text-indigo-500"></i> Registros Candidatos</p>
                         <p class="text-lg font-bold text-slate-800">1,248 <span class="text-xs font-normal text-slate-400">líneas</span></p>
+                        <p class="text-[10px] text-slate-400 mt-1">Saldo > 0 validados</p>
                     </div>
-                    <div class="bg-green-50 border border-green-200 rounded-xl p-4 flex flex-col justify-center items-center text-center shadow-sm">
-                        <div class="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center text-green-600 mb-1"><i class="ph-fill ph-check-circle text-xl"></i></div>
+                    <div onclick="openProvDrawer('cuadratura')" class="bg-green-50 border border-green-200 rounded-xl p-4 flex flex-col justify-center items-center text-center shadow-sm cursor-pointer hover:shadow-md hover:border-green-400 hover:-translate-y-0.5 transition-all group relative">
+                        <i class="ph ph-arrow-square-out absolute top-2 right-2 text-green-300 group-hover:text-green-500 text-xs transition-colors"></i>
+                        <div class="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center text-green-600 mb-1 group-hover:bg-green-200 transition-colors"><i class="ph-fill ph-check-circle text-xl"></i></div>
                         <p class="text-xs font-bold text-green-800">¡Cuadratura exitosa!</p>
+                        <p class="text-[10px] text-green-600 mt-0.5">Ver detalle</p>
                     </div>
+                </div>
+
+                <!-- DRAWER: Provisiones KPI -->
+                <div id="prov-drawer-overlay" onclick="closeProvDrawer()" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-40 hidden"></div>
+                <div id="prov-drawer" class="fixed top-0 right-0 h-full w-full max-w-lg bg-white shadow-2xl z-50 transform translate-x-full transition-transform duration-300 flex flex-col border-l border-slate-200">
+                    <div class="p-5 border-b border-slate-200 flex items-center justify-between shrink-0">
+                        <div class="flex items-center gap-3">
+                            <div id="prov-drawer-icon" class="w-10 h-10 rounded-lg flex items-center justify-center text-xl"></div>
+                            <div><p class="text-[10px] text-slate-500 font-bold uppercase tracking-wider" id="prov-drawer-label">KPI</p><h3 class="text-lg font-black text-slate-800" id="prov-drawer-value">—</h3></div>
+                        </div>
+                        <button onclick="closeProvDrawer()" class="w-8 h-8 rounded-lg bg-slate-100 hover:bg-slate-200 flex items-center justify-center text-slate-500"><i class="ph-bold ph-x"></i></button>
+                    </div>
+                    <div id="prov-drawer-body" class="flex-1 overflow-y-auto p-5 space-y-5"></div>
+                    <div id="prov-drawer-footer" class="p-4 border-t border-slate-200 bg-slate-50 shrink-0"></div>
                 </div>
 
                 <!-- Main Layout -->
@@ -995,27 +1019,27 @@
                     <!-- Left Column: Tabs & Table -->
                     <div class="flex-1 bg-white border border-slate-200 rounded-xl shadow-sm flex flex-col min-w-0">
                         <div class="border-b border-slate-200 flex overflow-x-auto hide-scrollbar bg-slate-50 pt-2 px-2 shrink-0">
-                            <button class="tab-btn active px-4 py-2.5 text-sm bg-white rounded-t-lg border border-b-0 border-slate-200 text-indigo-600 font-bold relative top-px whitespace-nowrap">Portafolio (Base)</button>
-                            <button class="tab-btn px-4 py-2.5 text-sm text-slate-500 hover:text-slate-700 whitespace-nowrap">FUD (Variable)</button>
-                            <button class="tab-btn px-4 py-2.5 text-sm text-slate-500 hover:text-slate-700 whitespace-nowrap">Above Base</button>
-                            <button class="tab-btn px-4 py-2.5 text-sm text-slate-500 hover:text-slate-700 whitespace-nowrap">Descuentos</button>
-                            <button class="tab-btn px-4 py-2.5 text-sm text-slate-500 hover:text-slate-700 whitespace-nowrap">Retroactivos</button>
-                            <button class="tab-btn px-4 py-2.5 text-sm text-slate-500 hover:text-slate-700 whitespace-nowrap"><i class="ph ph-trend-up text-green-500"></i> Price Increase</button>
-                            <button class="tab-btn ml-auto px-4 py-2.5 text-sm font-medium text-slate-700 whitespace-nowrap border-l border-slate-200"><i class="ph ph-squares-four"></i> Resumen General</button>
+                            <button id="provtab-base"      onclick="switchProvTab('base')"      class="tab-btn active px-4 py-2.5 text-sm bg-white rounded-t-lg border border-b-0 border-slate-200 text-indigo-600 font-bold relative top-px whitespace-nowrap">Portafolio (Base)</button>
+                            <button id="provtab-fud"       onclick="switchProvTab('fud')"       class="tab-btn px-4 py-2.5 text-sm text-slate-500 hover:text-slate-700 whitespace-nowrap">FUD (Variable)</button>
+                            <button id="provtab-abovebase" onclick="switchProvTab('abovebase')" class="tab-btn px-4 py-2.5 text-sm text-slate-500 hover:text-slate-700 whitespace-nowrap">Above Base</button>
+                            <button id="provtab-descuentos" onclick="switchProvTab('descuentos')" class="tab-btn px-4 py-2.5 text-sm text-slate-500 hover:text-slate-700 whitespace-nowrap">Descuentos</button>
+                            <button id="provtab-retros"    onclick="switchProvTab('retros')"    class="tab-btn px-4 py-2.5 text-sm text-slate-500 hover:text-slate-700 whitespace-nowrap">Retroactivos</button>
+                            <button id="provtab-price"     onclick="switchProvTab('price')"     class="tab-btn px-4 py-2.5 text-sm text-slate-500 hover:text-slate-700 whitespace-nowrap"><i class="ph ph-trend-up text-green-500"></i> Price Increase</button>
+                            <button id="provtab-resumen"   onclick="switchProvTab('resumen')"   class="tab-btn ml-auto px-4 py-2.5 text-sm font-medium text-slate-700 whitespace-nowrap border-l border-slate-200"><i class="ph ph-squares-four"></i> Resumen General</button>
                         </div>
 
                         <!-- Filters -->
-                        <div class="p-3 bg-white border-b border-slate-200 flex gap-3 shrink-0 flex-wrap">
-                            <select class="text-xs border-slate-300 rounded-md shadow-sm py-1.5 focus:ring-indigo-500"><option>División (Todas)</option><option>México</option></select>
-                            <select class="text-xs border-slate-300 rounded-md shadow-sm py-1.5 focus:ring-indigo-500"><option>Customer Group (Todos)</option></select>
+                        <div id="prov-filters" class="p-3 bg-white border-b border-slate-200 flex gap-3 shrink-0 flex-wrap">
+                            <select id="prov-filter-div" onchange="filterProvTable()" class="text-xs border-slate-300 rounded-md shadow-sm py-1.5 focus:ring-indigo-500"><option value="Todos">División (Todas)</option><option value="México">México</option></select>
+                            <select id="prov-filter-grp" onchange="filterProvTable()" class="text-xs border-slate-300 rounded-md shadow-sm py-1.5 focus:ring-indigo-500"><option value="Todos">Customer Group (Todos)</option></select>
                             <div class="relative">
                                 <i class="ph ph-magnifying-glass absolute left-2.5 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
-                                <input type="text" placeholder="Buscar servicio..." class="pl-8 text-xs border border-slate-300 rounded-md shadow-sm py-1.5 focus:ring-indigo-500 w-48">
+                                <input type="text" id="prov-filter-search" onkeyup="filterProvTable()" placeholder="Buscar servicio..." class="pl-8 text-xs border border-slate-300 rounded-md shadow-sm py-1.5 focus:ring-indigo-500 w-48">
                             </div>
                         </div>
 
-                        <!-- Table -->
-                        <div class="flex-1 overflow-auto bg-slate-50/30">
+                        <!-- PANEL: Portafolio Base (tabla existente) -->
+                        <div id="provpanel-base" class="flex-1 overflow-auto bg-slate-50/30">
                             <table class="w-full text-left text-xs whitespace-nowrap">
                                 <thead class="bg-white text-slate-500 font-medium sticky top-0 shadow-sm z-10 border-b border-slate-200">
                                     <tr>
@@ -1045,6 +1069,79 @@
                                     </tr>
                                 </tfoot>
                             </table>
+                        </div>
+
+                        <!-- PANEL: FUD Variable -->
+                        <div id="provpanel-fud" class="hidden flex-1 overflow-auto">
+                            <div class="p-4 bg-teal-50 border-b border-teal-100 flex gap-4">
+                                <div class="bg-white border border-teal-200 rounded-lg px-4 py-2 text-center"><p class="text-[9px] text-teal-700 font-bold uppercase">Monto FUD</p><p class="text-sm font-black text-teal-800">$6,480,000.00</p></div>
+                                <div class="bg-white border border-amber-200 rounded-lg px-4 py-2 text-center"><p class="text-[9px] text-amber-700 font-bold uppercase">En Negociación</p><p class="text-sm font-black text-amber-800">$2,100,000.00</p></div>
+                                <div class="bg-white border border-green-200 rounded-lg px-4 py-2 text-center"><p class="text-[9px] text-green-700 font-bold uppercase">Activables</p><p class="text-sm font-black text-green-800">$4,380,000.00</p></div>
+                            </div>
+                            <table class="w-full text-left text-xs whitespace-nowrap">
+                                <thead class="bg-white text-slate-500 font-medium sticky top-0 border-b border-slate-200 z-10"><tr><th class="px-4 py-3">FUD ID</th><th class="px-4 py-3">Cliente</th><th class="px-4 py-3">Servicio</th><th class="px-4 py-3 text-right">Monto FUD</th><th class="px-4 py-3 text-right font-bold text-indigo-600">A Provisionar</th><th class="px-4 py-3 text-center">Estado</th></tr></thead>
+                                <tbody id="tbody-prov-fud" class="divide-y divide-slate-100"></tbody>
+                            </table>
+                        </div>
+
+                        <!-- PANEL: Above Base -->
+                        <div id="provpanel-abovebase" class="hidden flex-1 overflow-auto">
+                            <div class="p-3 bg-amber-50 border-b border-amber-100 flex items-center gap-3 text-xs text-amber-800"><i class="ph-fill ph-info text-amber-500 shrink-0"></i>Servicios acordados por encima del portafolio base. Requieren PO válida asociada para provisionar.</div>
+                            <table class="w-full text-left text-xs whitespace-nowrap">
+                                <thead class="bg-white text-slate-500 font-medium sticky top-0 border-b border-slate-200 z-10"><tr><th class="px-4 py-3">Servicio / Proyecto</th><th class="px-4 py-3">Cliente</th><th class="px-4 py-3">PO Referencia</th><th class="px-4 py-3 text-right">Monto Acordado</th><th class="px-4 py-3 text-right font-bold text-indigo-600">A Provisionar</th><th class="px-4 py-3 text-center">PO Válida</th></tr></thead>
+                                <tbody id="tbody-prov-abovebase" class="divide-y divide-slate-100"></tbody>
+                            </table>
+                        </div>
+
+                        <!-- PANEL: Descuentos -->
+                        <div id="provpanel-descuentos" class="hidden flex-1 overflow-auto">
+                            <div class="p-3 bg-red-50 border-b border-red-100 flex items-center gap-3 text-xs text-red-800"><i class="ph-fill ph-warning-circle text-red-500 shrink-0"></i>Los descuentos generan provisiones negativas (OMVI–). Requieren justificación y aprobación del Aprobador.</div>
+                            <table class="w-full text-left text-xs whitespace-nowrap">
+                                <thead class="bg-white text-slate-500 font-medium sticky top-0 border-b border-slate-200 z-10"><tr><th class="px-4 py-3">Cliente</th><th class="px-4 py-3">Tipo Descuento</th><th class="px-4 py-3">Motivo</th><th class="px-4 py-3 text-right">Monto</th><th class="px-4 py-3 text-right font-bold text-red-600">Provisión (–)</th><th class="px-4 py-3 text-center">Aprobado</th></tr></thead>
+                                <tbody id="tbody-prov-descuentos" class="divide-y divide-slate-100"></tbody>
+                            </table>
+                        </div>
+
+                        <!-- PANEL: Retroactivos -->
+                        <div id="provpanel-retros" class="hidden flex-1 overflow-auto">
+                            <div class="p-3 bg-purple-50 border-b border-purple-100 flex items-center gap-3 text-xs text-purple-800"><i class="ph-fill ph-clock-counter-clockwise text-purple-500 shrink-0"></i>Ajustes de periodos anteriores. Se validan contra el saldo de provisión del mes de origen.</div>
+                            <table class="w-full text-left text-xs whitespace-nowrap">
+                                <thead class="bg-white text-slate-500 font-medium sticky top-0 border-b border-slate-200 z-10"><tr><th class="px-4 py-3">Cliente</th><th class="px-4 py-3">Periodo Origen</th><th class="px-4 py-3">Concepto</th><th class="px-4 py-3 text-right">Monto Original</th><th class="px-4 py-3 text-right font-bold text-purple-600">Ajuste</th><th class="px-4 py-3 text-center">Estado</th></tr></thead>
+                                <tbody id="tbody-prov-retros" class="divide-y divide-slate-100"></tbody>
+                            </table>
+                        </div>
+
+                        <!-- PANEL: Price Increase -->
+                        <div id="provpanel-price" class="hidden flex-1 overflow-auto">
+                            <div class="p-3 bg-green-50 border-b border-green-100 flex items-center gap-3 text-xs text-green-800"><i class="ph-fill ph-trend-up text-green-500 shrink-0"></i>Incrementos de precio acordados en contratos. Se aplican sobre el portafolio base vigente.</div>
+                            <table class="w-full text-left text-xs whitespace-nowrap">
+                                <thead class="bg-white text-slate-500 font-medium sticky top-0 border-b border-slate-200 z-10"><tr><th class="px-4 py-3">Cliente</th><th class="px-4 py-3">Servicio</th><th class="px-4 py-3">% Incremento</th><th class="px-4 py-3 text-right">Base Afectada</th><th class="px-4 py-3 text-right font-bold text-green-600">Incremento $</th><th class="px-4 py-3">Vigencia</th></tr></thead>
+                                <tbody id="tbody-prov-price" class="divide-y divide-slate-100"></tbody>
+                            </table>
+                        </div>
+
+                        <!-- PANEL: Resumen General -->
+                        <div id="provpanel-resumen" class="hidden flex-1 overflow-auto p-5">
+                            <div class="grid grid-cols-2 gap-4 mb-5">
+                                <div class="bg-white border border-slate-200 rounded-xl p-4 shadow-sm"><p class="text-xs text-slate-500 mb-1">OMVI Positivo (Total)</p><p class="text-xl font-black text-indigo-700">$42,658,420.15</p><p class="text-[10px] text-slate-400 mt-1">Provisiones por crear</p></div>
+                                <div class="bg-white border border-slate-200 rounded-xl p-4 shadow-sm"><p class="text-xs text-slate-500 mb-1">OMVI Negativo (Total)</p><p class="text-xl font-black text-teal-600">$8,154,247.88</p><p class="text-[10px] text-slate-400 mt-1">Cancelaciones pendientes</p></div>
+                                <div class="bg-white border border-slate-200 rounded-xl p-4 shadow-sm"><p class="text-xs text-slate-500 mb-1">Descuentos Netos</p><p class="text-xl font-black text-red-600">-$1,847,000.00</p><p class="text-[10px] text-slate-400 mt-1">Provisiones negativas</p></div>
+                                <div class="bg-green-50 border border-green-200 rounded-xl p-4 shadow-sm"><p class="text-xs text-green-700 font-bold mb-1">Neto Final a Registrar</p><p class="text-xl font-black text-green-800">$48,965,668.03</p><p class="text-[10px] text-green-600 mt-1">✓ Listo para pólizas</p></div>
+                            </div>
+                            <div class="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm">
+                                <div class="bg-slate-50 border-b border-slate-200 px-4 py-3"><h4 class="text-xs font-bold text-slate-700">Resumen por Tipo de Provisión</h4></div>
+                                <table class="w-full text-xs">
+                                    <thead class="border-b border-slate-100 text-slate-500"><tr><th class="px-4 py-2.5 text-left font-medium">Tipo</th><th class="px-4 py-2.5 text-right font-medium">Registros</th><th class="px-4 py-2.5 text-right font-medium">Monto</th><th class="px-4 py-2.5 text-right font-medium">% del Total</th><th class="px-4 py-2.5 text-center font-medium">Estado</th></tr></thead>
+                                    <tbody class="divide-y divide-slate-100">
+                                        <tr class="hover:bg-slate-50"><td class="px-4 py-2.5 font-semibold text-slate-800 flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-indigo-500"></span>Portafolio Base</td><td class="px-4 py-2.5 text-right">1,248</td><td class="px-4 py-2.5 text-right font-bold text-indigo-600">$34,468,420.15</td><td class="px-4 py-2.5 text-right">70.4%</td><td class="px-4 py-2.5 text-center"><span class="bg-green-100 text-green-700 px-2 py-0.5 rounded text-[10px] font-bold">✓ Listo</span></td></tr>
+                                        <tr class="hover:bg-slate-50"><td class="px-4 py-2.5 font-semibold text-slate-800 flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-teal-400"></span>FUD Variable</td><td class="px-4 py-2.5 text-right">156</td><td class="px-4 py-2.5 text-right font-bold text-teal-600">$6,480,000.00</td><td class="px-4 py-2.5 text-right">13.2%</td><td class="px-4 py-2.5 text-center"><span class="bg-green-100 text-green-700 px-2 py-0.5 rounded text-[10px] font-bold">✓ Listo</span></td></tr>
+                                        <tr class="hover:bg-slate-50"><td class="px-4 py-2.5 font-semibold text-slate-800 flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-amber-400"></span>Above Base</td><td class="px-4 py-2.5 text-right">42</td><td class="px-4 py-2.5 text-right font-bold text-amber-600">$1,710,000.00</td><td class="px-4 py-2.5 text-right">3.5%</td><td class="px-4 py-2.5 text-center"><span class="bg-amber-100 text-amber-700 px-2 py-0.5 rounded text-[10px] font-bold">⚠ Revisar</span></td></tr>
+                                        <tr class="hover:bg-slate-50"><td class="px-4 py-2.5 font-semibold text-slate-800 flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-red-400"></span>Descuentos</td><td class="px-4 py-2.5 text-right">18</td><td class="px-4 py-2.5 text-right font-bold text-red-600">-$1,847,000.00</td><td class="px-4 py-2.5 text-right">3.8%</td><td class="px-4 py-2.5 text-center"><span class="bg-amber-100 text-amber-700 px-2 py-0.5 rounded text-[10px] font-bold">⚠ Aprobación</span></td></tr>
+                                        <tr class="hover:bg-slate-50"><td class="px-4 py-2.5 font-semibold text-slate-800 flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-purple-400"></span>Retroactivos</td><td class="px-4 py-2.5 text-right">12</td><td class="px-4 py-2.5 text-right font-bold text-purple-600">$1,247,000.00</td><td class="px-4 py-2.5 text-right">2.5%</td><td class="px-4 py-2.5 text-center"><span class="bg-green-100 text-green-700 px-2 py-0.5 rounded text-[10px] font-bold">✓ Listo</span></td></tr>
+                                        <tr class="hover:bg-slate-50"><td class="px-4 py-2.5 font-semibold text-slate-800 flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-green-400"></span>Price Increase</td><td class="px-4 py-2.5 text-right">8</td><td class="px-4 py-2.5 text-right font-bold text-green-600">$600,000.00</td><td class="px-4 py-2.5 text-right">1.2%</td><td class="px-4 py-2.5 text-center"><span class="bg-green-100 text-green-700 px-2 py-0.5 rounded text-[10px] font-bold">✓ Listo</span></td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
 
                         <!-- Footer Actions -->
@@ -4190,6 +4287,215 @@
         // Init dona facturacion on nav
         const _navFact=window.nav;
         window.nav=function(viewId){_navFact(viewId);if(viewId==='facturacion'){setTimeout(()=>{const ctx=document.getElementById('chart-facturacion');if(ctx&&!factDonutChart){factDonutChart=new Chart(ctx,{type:'doughnut',data:{labels:factDonutData.map(d=>d.label),datasets:[{data:factDonutData.map(d=>Math.abs(d.value)),backgroundColor:factDonutData.map(d=>d.color),borderWidth:0,hoverOffset:8}]},options:{responsive:true,maintainAspectRatio:false,cutout:'72%',plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>`${c.label}: ${fmtMoney(c.raw)}`}}},onClick(evt,elements){if(elements.length)filtrarFactDonut(elements[0].index);else limpiarFiltroFactDonut();}}});}buildFactDonutLegend();},120);}};
+
+        // ============================================================
+        // PROVISIONES — KPI Drawer + Tabs funcionales
+        // ============================================================
+
+        const provDrawerConfig = {
+            portafolio: {
+                label:'Total Esperado (Portafolio)', value:'$215,845,120.00',
+                icon:'ph ph-briefcase', iconBg:'bg-blue-50 text-blue-600', color:'#3B82F6',
+                kpis:[{l:'Portafolio Fijo',v:'$180,500,000',p:'83.6%',c:'bg-indigo-500'},{l:'Variable (FUD)',v:'$35,345,120',p:'16.4%',c:'bg-teal-400'}],
+                tabla:{titulo:'Por División',cols:['División','Portafolio','% Total'],rows:[['MX Centro','$98,450,000','45.6%'],['MX Norte','$72,200,120','33.4%'],['MX Sur','$45,195,000','20.9%']]},
+                nota:'Base de cálculo total. Incluye portafolio fijo y variable (FUD) confirmado para el periodo.'
+            },
+            provisionar: {
+                label:'Total a Provisionar', value:'$42,658,420.15',
+                icon:'ph ph-warning-circle', iconBg:'bg-indigo-50 text-indigo-600', color:'#6366F1',
+                kpis:[{l:'Portafolio Base',v:'$34,468,420',p:'80.8%',c:'bg-indigo-500'},{l:'FUD Variable',v:'$6,480,000',p:'15.2%',c:'bg-teal-400'},{l:'Above Base + Retros',v:'$1,710,000',p:'4.0%',c:'bg-amber-400'}],
+                tabla:{titulo:'Top 5 Clientes',cols:['Cliente','Monto','% Part.'],rows:[['BBVA México','$12,450,000','29.2%'],['Grupo Modelo','$9,870,000','23.1%'],['Walmart','$7,340,000','17.2%'],['HSBC México','$5,210,000','12.2%'],['Liverpool','$3,190,420','7.5%']]},
+                nota:'Monto total de provisiones OMVI+ a crear en este periodo. 19.76% del portafolio total.'
+            },
+            diferencia: {
+                label:'Diferencia (Cuadratura)', value:'$0.00',
+                icon:'ph ph-equals', iconBg:'bg-green-50 text-green-600', color:'#22C55E',
+                kpis:[{l:'Portafolio esperado',v:'$215,845,120',p:'100%',c:'bg-slate-300'},{l:'Suma calculada',v:'$215,845,120',p:'100%',c:'bg-green-500'},{l:'Diferencia',v:'$0.00',p:'0.00%',c:'bg-green-500'}],
+                tabla:{titulo:'Validaciones de cuadratura',cols:['Validación','Resultado','Estado'],rows:[['Portafolio vs Facturación','$0.00','✓ OK'],['Dimensiones Navision','1,248 válidas','✓ OK'],['Umbral de redondeo','< $1.00','✓ OK'],['Cuentas contables','2341/2342/2343','✓ OK']]},
+                nota:'Diferencia dentro del umbral de $1.00 MXN. Sistema listo para generar provisiones.'
+            },
+            candidatos: {
+                label:'Registros Candidatos', value:'1,248 líneas',
+                icon:'ph ph-magic-wand', iconBg:'bg-amber-50 text-amber-600', color:'#F59E0B',
+                kpis:[{l:'Con Saldo > 0',v:'1,248',p:'94.7%',c:'bg-green-500'},{l:'Bloqueados (dim.)',v:'45',p:'3.4%',c:'bg-red-400'},{l:'Pendientes validar',v:'25',p:'1.9%',c:'bg-amber-400'}],
+                tabla:{titulo:'Distribución por tipo',cols:['Tipo','Registros','Monto'],rows:[['Portafolio Fijo','1,050','$180,500,000'],['Variable (FUD)','156','$35,345,120'],['Above Base','42','$1,710,000']]},
+                nota:'Solo registros con Saldo > 0 y dimensión Navision activa. Los 45 bloqueados quedan en bitácora.'
+            },
+            cuadratura: {
+                label:'Estado de Cuadratura', value:'✓ Exitosa',
+                icon:'ph-fill ph-check-circle', iconBg:'bg-green-50 text-green-600', color:'#22C55E',
+                kpis:[{l:'Saldo declarado',v:'$215,845,120',p:'100%',c:'bg-green-500'},{l:'Total calculado',v:'$215,845,120',p:'100%',c:'bg-green-500'},{l:'Diferencia neta',v:'$0.00',p:'0%',c:'bg-slate-200'}],
+                tabla:{titulo:'Log de validación',cols:['Regla','Valor','Estado'],rows:[['Diferencia máx. permitida','$1.00 MXN','✓ Cumple'],['Dimensiones activas','1,248 / 1,293','✓ OK'],['Cuentas 2341+2342+2343','Validadas','✓ OK'],['Apóstrofe en periodo','"ABR-2026"','✓ OK']]},
+                nota:'Todos los controles de cuadratura pasaron. El motor está listo para ejecutar la creación de provisiones.'
+            },
+        };
+
+        let provKpiChartInst = null;
+
+        window.openProvDrawer = function(tipo) {
+            const cfg = provDrawerConfig[tipo]; if(!cfg) return;
+            document.getElementById('prov-drawer-icon').className = `w-10 h-10 rounded-lg flex items-center justify-center text-xl ${cfg.iconBg}`;
+            document.getElementById('prov-drawer-icon').innerHTML = `<i class="${cfg.icon}"></i>`;
+            document.getElementById('prov-drawer-label').textContent = cfg.label;
+            document.getElementById('prov-drawer-value').textContent = cfg.value;
+            document.getElementById('prov-drawer-body').innerHTML = `
+                ${cfg.nota ? `<div class="bg-blue-50 border border-blue-100 rounded-lg px-3 py-2.5 text-[11px] text-blue-700 flex gap-2 items-start"><i class="ph-fill ph-info text-blue-400 shrink-0 mt-0.5"></i>${cfg.nota}</div>` : ''}
+                <div class="bg-white rounded-xl border border-slate-200 p-4 shadow-sm">
+                    <h4 class="text-xs font-bold text-slate-700 mb-4">Desglose por Componente</h4>
+                    <div class="space-y-3.5">${cfg.kpis.map(k => `<div>
+                        <div class="flex justify-between items-end mb-1.5"><span class="text-[11px] text-slate-600">${k.l}</span><div><span class="text-xs font-bold text-slate-800">${k.v}</span><span class="text-[10px] text-slate-400 ml-1">${k.p}</span></div></div>
+                        <div class="w-full bg-slate-100 rounded-full h-2"><div class="h-2 rounded-full ${k.c}" style="width:${k.p}"></div></div>
+                    </div>`).join('')}</div>
+                </div>
+                <div class="bg-white rounded-xl border border-slate-200 p-4 shadow-sm">
+                    <h4 class="text-xs font-bold text-slate-700 mb-3">Evolución 6 meses</h4>
+                    <div class="relative h-36"><canvas id="chart-prov-kpi-mini"></canvas></div>
+                </div>
+                <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+                    <div class="p-3 bg-slate-50 border-b border-slate-200"><h4 class="text-xs font-bold text-slate-700">${cfg.tabla.titulo}</h4></div>
+                    <table class="w-full text-[11px] text-left">
+                        <thead class="bg-white border-b border-slate-100 text-slate-500"><tr>${cfg.tabla.cols.map(c => `<th class="px-3 py-2 font-medium">${c}</th>`).join('')}</tr></thead>
+                        <tbody class="divide-y divide-slate-50">${cfg.tabla.rows.map((row,i) => `<tr class="hover:bg-slate-50 ${i%2?'bg-slate-50/40':''}">${row.map((cell,ci) => `<td class="px-3 py-2 ${ci===0?'font-semibold text-slate-800':'text-slate-600'}">${cell}</td>`).join('')}</tr>`).join('')}</tbody>
+                    </table>
+                </div>`;
+            document.getElementById('prov-drawer-footer').innerHTML = `<div class="flex justify-between items-center"><p class="text-[10px] text-slate-400">Datos al cierre de Abril 2026</p><button onclick="closeProvDrawer()" class="px-4 py-2 text-xs font-bold text-white bg-indigo-600 rounded-lg hover:bg-indigo-700">Cerrar</button></div>`;
+            document.getElementById('prov-drawer-overlay').classList.remove('hidden');
+            document.getElementById('prov-drawer').classList.remove('translate-x-full');
+            // Mini chart
+            const miniData = { portafolio:[210,211,212,213,214,215.8], provisionar:[44,45,43,41,44,42.7], diferencia:[0,0,0,0,0,0], candidatos:[1180,1200,1210,1225,1240,1248], cuadratura:[1,1,1,1,1,1] };
+            setTimeout(() => {
+                const ctx = document.getElementById('chart-prov-kpi-mini'); if(!ctx) return;
+                if(provKpiChartInst){provKpiChartInst.destroy();provKpiChartInst=null;}
+                provKpiChartInst = new Chart(ctx, {type:'line',data:{labels:['Nov','Dic','Ene','Feb','Mar','Abr'],datasets:[{data:miniData[tipo]||[0,0,0,0,0,0],borderColor:cfg.color,backgroundColor:cfg.color+'18',borderWidth:2,fill:true,tension:0.4,pointBackgroundColor:'#fff',pointBorderColor:cfg.color,pointRadius:3,pointHoverRadius:6}]},
+                    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{grid:{color:'#F1F5F9'},ticks:{font:{size:9},color:'#94A3B8'}},x:{grid:{display:false},ticks:{font:{size:9},color:'#94A3B8'}}}}});
+            }, 80);
+        };
+        window.closeProvDrawer = function() {
+            document.getElementById('prov-drawer').classList.add('translate-x-full');
+            document.getElementById('prov-drawer-overlay').classList.add('hidden');
+            if(provKpiChartInst){provKpiChartInst.destroy();provKpiChartInst=null;}
+        };
+
+        // Tabs de provisiones
+        const mockProvFud = [
+            {id:'FUD-2026-001',cliente:'BBVA México',  servicio:'Soporte N2 Cloud',    monto:2400000, prov:2400000, estado:'Activable'},
+            {id:'FUD-2026-003',cliente:'Grupo Modelo', servicio:'Infraestructura DC',   monto:1800000, prov:1800000, estado:'Activable'},
+            {id:'FUD-2026-005',cliente:'Liverpool',     servicio:'Monitoreo 24x7',       monto:900000,  prov:900000,  estado:'Activable'},
+            {id:'FUD-2026-007',cliente:'Femsa',         servicio:'ERP Support Tier 1',   monto:1380000, prov:1380000, estado:'Activable'},
+            {id:'FUD-2026-002',cliente:'Walmart',       servicio:'Help Desk Regional',   monto:2100000, prov:0,       estado:'Negociación'},
+            {id:'FUD-2026-004',cliente:'HSBC México',   servicio:'Cybersec Managed',     monto:1800000, prov:0,       estado:'Negociación'},
+        ];
+        const mockProvAboveBase = [
+            {servicio:'Migración SAP → BC',cliente:'BBVA México',  po:'PO-99234', monto:850000,  valida:true},
+            {servicio:'Proyecto DevOps',    cliente:'Grupo Modelo', po:'PO-88123', monto:560000,  valida:true},
+            {servicio:'Consultoría ITIL',   cliente:'HSBC México',  po:'N/A',      monto:300000,  valida:false},
+        ];
+        const mockProvDescuentos = [
+            {cliente:'Walmart',       tipo:'Penalización SLA', motivo:'Incumplimiento ANS Mar-26', monto:-520000,  aprobado:true},
+            {cliente:'Liverpool',     tipo:'Descuento volumen', motivo:'Acuerdo contrato anual',    monto:-380000,  aprobado:true},
+            {cliente:'Chedraui',      tipo:'N/C Servicio',      motivo:'Servicio cancelado',         monto:-947000,  aprobado:false},
+        ];
+        const mockProvRetros = [
+            {cliente:'BBVA México',  periodo:'Feb 2026', concepto:'Ajuste tarifa Q1',       original:420000, ajuste:42000,  estado:'Validado'},
+            {cliente:'Grupo Modelo', periodo:'Mar 2026', concepto:'Corrección facturación',  original:890000, ajuste:-89000, estado:'Validado'},
+            {cliente:'Walmart',      periodo:'Ene 2026', concepto:'Servicio adicional',       original:310000, ajuste:31000,  estado:'Pendiente'},
+        ];
+        const mockProvPrice = [
+            {cliente:'BBVA México',  servicio:'Soporte N2',        pct:'4.2%', base:12450000, inc:523000, vigencia:'Abr 2026'},
+            {cliente:'Grupo Modelo', servicio:'Infraestructura DC', pct:'3.8%', base:9870000,  inc:375000, vigencia:'Ene 2026'},
+            {cliente:'HSBC México',  servicio:'Cybersec Managed',   pct:'5.0%', base:5210000,  inc:261000, vigencia:'Abr 2026'},
+        ];
+
+        window.switchProvTab = function(tab) {
+            const allTabs = ['base','fud','abovebase','descuentos','retros','price','resumen'];
+            allTabs.forEach(t => {
+                const p = document.getElementById('provpanel-'+t); if(p) p.classList.toggle('hidden', t!==tab);
+                const b = document.getElementById('provtab-'+t);
+                if(b) {
+                    const on = t===tab;
+                    if(t==='resumen') {
+                        b.className = `tab-btn ml-auto px-4 py-2.5 text-sm whitespace-nowrap border-l border-slate-200 ${on?'text-indigo-600 font-bold':'font-medium text-slate-700'}`;
+                    } else {
+                        b.className = on
+                            ? 'tab-btn active px-4 py-2.5 text-sm bg-white rounded-t-lg border border-b-0 border-slate-200 text-indigo-600 font-bold relative top-px whitespace-nowrap'
+                            : 'tab-btn px-4 py-2.5 text-sm text-slate-500 hover:text-slate-700 whitespace-nowrap';
+                    }
+                }
+            });
+            // Show/hide filters (only relevant for base tab)
+            const filters = document.getElementById('prov-filters');
+            if(filters) filters.classList.toggle('hidden', tab !== 'base');
+            // Render table data
+            if(tab==='fud')       renderProvFudTab();
+            if(tab==='abovebase') renderProvAboveBaseTab();
+            if(tab==='descuentos') renderProvDescuentosTab();
+            if(tab==='retros')    renderProvRetrosTab();
+            if(tab==='price')     renderProvPriceTab();
+        };
+
+        window.filterProvTable = function() {
+            // Re-render provisiones table with filters (delegates to existing renderProvisionesTable)
+            if(typeof renderProvisionesTable === 'function') renderProvisionesTable();
+        };
+
+        function renderProvFudTab() {
+            const tbody = document.getElementById('tbody-prov-fud'); if(!tbody) return;
+            tbody.innerHTML = mockProvFud.map(r => {
+                const isNeg = r.estado === 'Negociación';
+                return `<tr class="hover:bg-slate-50 ${isNeg?'opacity-60':''}">
+                    <td class="px-4 py-2.5 font-mono text-[10px] text-teal-700 font-bold">${r.id}</td>
+                    <td class="px-4 py-2.5 font-semibold text-slate-800">${r.cliente}</td>
+                    <td class="px-4 py-2.5 text-slate-500">${r.servicio}</td>
+                    <td class="px-4 py-2.5 text-right text-slate-700">${fmtMoney(r.monto)}</td>
+                    <td class="px-4 py-2.5 text-right font-bold ${isNeg?'text-slate-400':'text-indigo-600'}">${isNeg?'—':fmtMoney(r.prov)}</td>
+                    <td class="px-4 py-2.5 text-center"><span class="px-2 py-0.5 rounded-full text-[10px] font-bold ${isNeg?'bg-amber-100 text-amber-700':'bg-green-100 text-green-700'}">${r.estado}</span></td>
+                </tr>`;
+            }).join('');
+        }
+        function renderProvAboveBaseTab() {
+            const tbody = document.getElementById('tbody-prov-abovebase'); if(!tbody) return;
+            tbody.innerHTML = mockProvAboveBase.map(r => `<tr class="hover:bg-slate-50">
+                <td class="px-4 py-2.5 font-semibold text-slate-800">${r.servicio}</td>
+                <td class="px-4 py-2.5 text-slate-600">${r.cliente}</td>
+                <td class="px-4 py-2.5 font-mono text-[10px] text-slate-700">${r.po}</td>
+                <td class="px-4 py-2.5 text-right text-slate-700">${fmtMoney(r.monto)}</td>
+                <td class="px-4 py-2.5 text-right font-bold text-indigo-600">${r.valida?fmtMoney(r.monto):'—'}</td>
+                <td class="px-4 py-2.5 text-center"><span class="px-2 py-0.5 rounded text-[10px] font-bold ${r.valida?'bg-green-100 text-green-700':'bg-red-100 text-red-700'}">${r.valida?'✓ Válida':'✗ Sin PO'}</span></td>
+            </tr>`).join('');
+        }
+        function renderProvDescuentosTab() {
+            const tbody = document.getElementById('tbody-prov-descuentos'); if(!tbody) return;
+            tbody.innerHTML = mockProvDescuentos.map(r => `<tr class="hover:bg-slate-50">
+                <td class="px-4 py-2.5 font-semibold text-slate-800">${r.cliente}</td>
+                <td class="px-4 py-2.5 text-slate-600">${r.tipo}</td>
+                <td class="px-4 py-2.5 text-slate-500 text-[11px]">${r.motivo}</td>
+                <td class="px-4 py-2.5 text-right text-slate-700">${fmtMoney(r.monto)}</td>
+                <td class="px-4 py-2.5 text-right font-bold text-red-600">${fmtMoney(r.monto)}</td>
+                <td class="px-4 py-2.5 text-center"><span class="px-2 py-0.5 rounded text-[10px] font-bold ${r.aprobado?'bg-green-100 text-green-700':'bg-amber-100 text-amber-700'}">${r.aprobado?'✓ Aprobado':'⚠ Pendiente'}</span></td>
+            </tr>`).join('');
+        }
+        function renderProvRetrosTab() {
+            const tbody = document.getElementById('tbody-prov-retros'); if(!tbody) return;
+            tbody.innerHTML = mockProvRetros.map(r => `<tr class="hover:bg-slate-50">
+                <td class="px-4 py-2.5 font-semibold text-slate-800">${r.cliente}</td>
+                <td class="px-4 py-2.5 text-slate-600">${r.periodo}</td>
+                <td class="px-4 py-2.5 text-slate-500">${r.concepto}</td>
+                <td class="px-4 py-2.5 text-right text-slate-700">${fmtMoney(r.original)}</td>
+                <td class="px-4 py-2.5 text-right font-bold ${r.ajuste>=0?'text-indigo-600':'text-red-600'}">${fmtMoney(r.ajuste)}</td>
+                <td class="px-4 py-2.5 text-center"><span class="px-2 py-0.5 rounded text-[10px] font-bold ${r.estado==='Validado'?'bg-green-100 text-green-700':'bg-amber-100 text-amber-700'}">${r.estado}</span></td>
+            </tr>`).join('');
+        }
+        function renderProvPriceTab() {
+            const tbody = document.getElementById('tbody-prov-price'); if(!tbody) return;
+            tbody.innerHTML = mockProvPrice.map(r => `<tr class="hover:bg-slate-50">
+                <td class="px-4 py-2.5 font-semibold text-slate-800">${r.cliente}</td>
+                <td class="px-4 py-2.5 text-slate-600">${r.servicio}</td>
+                <td class="px-4 py-2.5 font-bold text-green-600">${r.pct}</td>
+                <td class="px-4 py-2.5 text-right text-slate-700">${fmtMoney(r.base)}</td>
+                <td class="px-4 py-2.5 text-right font-bold text-green-600">+${fmtMoney(r.inc)}</td>
+                <td class="px-4 py-2.5 text-slate-500 text-[11px]">${r.vigencia}</td>
+            </tr>`).join('');
+        }
 
     </script>
 </body>
