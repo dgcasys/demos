@@ -145,7 +145,7 @@
                     <button class="flex items-center gap-2 border border-slate-200 bg-slate-50 hover:bg-slate-100 rounded-lg px-3 py-1.5 text-sm font-medium text-slate-700 transition-colors">
                         <i class="ph ph-calendar-blank text-lg text-slate-500"></i>
                         <div class="text-left">
-                            <span class="block text-[10px] uppercase text-slate-500 leading-none">Periodo activo</span>
+                            <span class="block text-[10px] uppercase text-slate-500 leading-none">Periodo Activo</span>
                             <span class="block leading-tight">Abril 2026</span>
                         </div>
                         <i class="ph ph-caret-down text-slate-400 ml-1"></i>
@@ -283,11 +283,35 @@
                 <div class="mb-6 flex justify-between items-end">
                     <div>
                         <h2 class="text-2xl font-bold text-slate-800">Carga de Base de Facturación</h2>
-                        <p class="text-sm text-slate-500 mt-1">Carga los registros exportados de Navision. Insumo principal del motor de conciliación.</p>
+                        <p class="text-sm text-slate-500 mt-1">Carga los registros exportados de Navision. <span class="text-indigo-500 font-medium">Haz clic en cualquier tarjeta para ver el desglose.</span></p>
                     </div>
                     <button class="flex items-center gap-2 text-sm text-indigo-600 bg-indigo-50 px-4 py-2 rounded-lg font-medium hover:bg-indigo-100 transition-colors">
                         <i class="ph ph-file-pdf"></i> Guía de carga
                     </button>
+                </div>
+
+                <!-- KPI Cards clickeables -->
+                <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+                    <div onclick="openFactDrawer('total')" class="bg-white rounded-xl border border-slate-200 p-4 shadow-sm cursor-pointer hover:shadow-md hover:border-indigo-300 hover:-translate-y-0.5 transition-all group flex items-start gap-3">
+                        <div class="w-9 h-9 rounded-lg bg-indigo-50 flex items-center justify-center text-indigo-600 shrink-0 group-hover:bg-indigo-100 transition-colors"><i class="ph ph-receipt"></i></div>
+                        <div class="flex-1 min-w-0"><p class="text-[10px] text-slate-500 font-medium">Total Facturación</p><p class="text-lg font-bold text-slate-800">$176.6M</p><p class="text-[10px] text-green-600 flex items-center mt-0.5"><i class="ph ph-trend-up mr-0.5"></i>+5.2% vs anterior</p></div>
+                        <i class="ph ph-arrow-square-out text-slate-300 group-hover:text-indigo-400 text-sm transition-colors"></i>
+                    </div>
+                    <div onclick="openFactDrawer('invoices')" class="bg-white rounded-xl border border-slate-200 p-4 shadow-sm cursor-pointer hover:shadow-md hover:border-green-300 hover:-translate-y-0.5 transition-all group flex items-start gap-3">
+                        <div class="w-9 h-9 rounded-lg bg-green-50 flex items-center justify-center text-green-600 shrink-0 group-hover:bg-green-100 transition-colors"><i class="ph ph-money"></i></div>
+                        <div class="flex-1 min-w-0"><p class="text-[10px] text-slate-500 font-medium">Facturas (Invoices)</p><p class="text-lg font-bold text-slate-800">$168.4M</p><p class="text-[10px] text-slate-400 mt-0.5">95.38% del total</p></div>
+                        <i class="ph ph-arrow-square-out text-slate-300 group-hover:text-green-400 text-sm transition-colors"></i>
+                    </div>
+                    <div onclick="openFactDrawer('registros')" class="bg-white rounded-xl border border-slate-200 p-4 shadow-sm cursor-pointer hover:shadow-md hover:border-blue-300 hover:-translate-y-0.5 transition-all group flex items-start gap-3">
+                        <div class="w-9 h-9 rounded-lg bg-blue-50 flex items-center justify-center text-blue-600 shrink-0 group-hover:bg-blue-100 transition-colors"><i class="ph ph-list-numbers"></i></div>
+                        <div class="flex-1 min-w-0"><p class="text-[10px] text-slate-500 font-medium">Registros Cargados</p><p class="text-lg font-bold text-slate-800">12,875</p><p class="text-[10px] text-slate-400 mt-0.5">3 cargas este mes</p></div>
+                        <i class="ph ph-arrow-square-out text-slate-300 group-hover:text-blue-400 text-sm transition-colors"></i>
+                    </div>
+                    <div onclick="openFactDrawer('credito')" class="bg-white rounded-xl border border-slate-200 p-4 shadow-sm cursor-pointer hover:shadow-md hover:border-red-300 hover:-translate-y-0.5 transition-all group flex items-start gap-3">
+                        <div class="w-9 h-9 rounded-lg bg-red-50 flex items-center justify-center text-red-600 shrink-0 group-hover:bg-red-100 transition-colors"><i class="ph ph-file-minus"></i></div>
+                        <div class="flex-1 min-w-0"><p class="text-[10px] text-slate-500 font-medium">Notas de Crédito</p><p class="text-lg font-bold text-red-600">-$8.2M</p><p class="text-[10px] text-red-400 mt-0.5">4.62% del total</p></div>
+                        <i class="ph ph-arrow-square-out text-slate-300 group-hover:text-red-400 text-sm transition-colors"></i>
+                    </div>
                 </div>
 
                 <!-- Top Grid -->
@@ -358,12 +382,15 @@
                     <div class="lg:col-span-2 bg-white rounded-xl border border-slate-200 shadow-sm flex flex-col">
                         <div class="border-b border-slate-200 px-6 py-4 flex justify-between items-center">
                             <div class="flex gap-4">
-                                <button class="tab-btn active text-sm pb-4 -mb-4">Historial de Cargas</button>
-                                <button class="tab-btn text-sm pb-4 -mb-4">Detalle del Periodo</button>
+                                <button id="fact-tab-historial" onclick="switchFactTab('historial')" class="tab-btn active text-sm pb-4 -mb-4 text-indigo-600 font-semibold border-b-2 border-indigo-600">Historial de Cargas</button>
+                                <button id="fact-tab-detalle"   onclick="switchFactTab('detalle')"   class="tab-btn text-sm pb-4 -mb-4 text-slate-500 hover:text-slate-700">Detalle del Periodo</button>
+                                <button id="fact-tab-clientes"  onclick="switchFactTab('clientes')"  class="tab-btn text-sm pb-4 -mb-4 text-slate-500 hover:text-slate-700">Por Cliente</button>
+                                <button id="fact-tab-evolucion" onclick="switchFactTab('evolucion')" class="tab-btn text-sm pb-4 -mb-4 text-slate-500 hover:text-slate-700">Evolución</button>
                             </div>
-                            <button class="text-sm border border-slate-300 rounded-lg px-3 py-1.5 flex items-center hover:bg-slate-50"><i class="ph ph-funnel mr-2"></i> Filtros</button>
+                            <button class="text-sm border border-slate-300 rounded-lg px-3 py-1.5 flex items-center hover:bg-slate-50"><i class="ph ph-download-simple mr-2"></i> Exportar</button>
                         </div>
-                        <div class="overflow-x-auto p-0">
+                        <!-- Panel: Historial -->
+                        <div id="fact-panel-historial" class="overflow-x-auto p-0">
                             <table class="w-full text-left text-sm whitespace-nowrap">
                                 <thead class="bg-slate-50 text-slate-500 font-medium border-b border-slate-200">
                                     <tr>
@@ -376,16 +403,106 @@
                                         <th class="px-6 py-3 text-center">Acciones</th>
                                     </tr>
                                 </thead>
-                                <tbody class="divide-y divide-slate-100" id="tbody-history">
-                                    <!-- Populated by JS -->
-                                </tbody>
+                                <tbody class="divide-y divide-slate-100" id="tbody-history"></tbody>
                             </table>
+                        </div>
+                        <!-- Panel: Detalle Periodo -->
+                        <div id="fact-panel-detalle" class="hidden">
+                            <div class="p-3 bg-slate-50 border-b border-slate-100 flex gap-3 items-center flex-wrap">
+                                <select id="fact-det-tipo" onchange="filterFactDetalle()" class="text-xs border border-slate-200 rounded-lg px-2 py-1.5"><option value="Todos">Todos los tipos</option><option value="Invoice">Facturas</option><option value="Credit">Notas de Crédito</option></select>
+                                <select id="fact-det-cliente" onchange="filterFactDetalle()" class="text-xs border border-slate-200 rounded-lg px-2 py-1.5"><option value="Todos">Todos los clientes</option><option>BBVA México</option><option>Walmart</option><option>Grupo Modelo</option><option>HSBC México</option><option>Liverpool</option></select>
+                                <div class="relative ml-auto"><i class="ph ph-magnifying-glass absolute left-2.5 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i><input type="text" id="fact-det-search" onkeyup="filterFactDetalle()" placeholder="Buscar documento..." class="pl-7 text-xs border border-slate-200 rounded-lg py-1.5 w-48"></div>
+                            </div>
+                            <div class="overflow-x-auto max-h-72">
+                                <table class="w-full text-left text-xs whitespace-nowrap">
+                                    <thead class="bg-white text-slate-500 font-medium border-b border-slate-200 sticky top-0"><tr><th class="px-4 py-2.5">No. Documento</th><th class="px-4 py-2.5">Cliente</th><th class="px-4 py-2.5">Tipo</th><th class="px-4 py-2.5">Fecha</th><th class="px-4 py-2.5">División</th><th class="px-4 py-2.5 text-right">Monto</th><th class="px-4 py-2.5 text-center">Estado</th></tr></thead>
+                                    <tbody id="tbody-fact-detalle" class="divide-y divide-slate-100"></tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <!-- Panel: Por Cliente -->
+                        <div id="fact-panel-clientes" class="hidden overflow-x-auto max-h-72">
+                            <table class="w-full text-left text-xs whitespace-nowrap">
+                                <thead class="bg-white text-slate-500 font-medium border-b border-slate-200 sticky top-0"><tr><th class="px-4 py-2.5">Cliente</th><th class="px-4 py-2.5">División</th><th class="px-4 py-2.5 text-right">Facturas</th><th class="px-4 py-2.5 text-right">N. Crédito</th><th class="px-4 py-2.5 text-right font-bold text-indigo-600">Total Neto</th><th class="px-4 py-2.5 text-center">% Total</th><th class="px-4 py-2.5 text-center">Tendencia</th></tr></thead>
+                                <tbody id="tbody-fact-clientes" class="divide-y divide-slate-100"></tbody>
+                            </table>
+                        </div>
+                        <!-- Panel: Evolución -->
+                        <div id="fact-panel-evolucion" class="hidden p-5">
+                            <div class="flex flex-wrap gap-3 items-center mb-4">
+                                <div class="flex gap-1 p-1 bg-slate-100 rounded-lg">
+                                    <button id="fact-rng-3"  onclick="setFactRango(3)"  class="px-3 py-1 text-[10px] font-bold rounded-md text-slate-500 hover:bg-white transition-all">3M</button>
+                                    <button id="fact-rng-6"  onclick="setFactRango(6)"  class="px-3 py-1 text-[10px] font-bold rounded-md bg-white text-indigo-600 shadow-sm transition-all">6M</button>
+                                    <button id="fact-rng-12" onclick="setFactRango(12)" class="px-3 py-1 text-[10px] font-bold rounded-md text-slate-500 hover:bg-white transition-all">12M</button>
+                                </div>
+                                <div class="flex gap-3 text-[10px] ml-2">
+                                    <div class="flex items-center gap-1.5"><span class="w-3 h-0.5 bg-indigo-500 rounded inline-block"></span>Total</div>
+                                    <div class="flex items-center gap-1.5"><span class="w-3 h-0.5 bg-green-500 rounded inline-block"></span>Facturas</div>
+                                    <div class="flex items-center gap-1.5"><span class="w-3 h-0.5 bg-red-400 rounded inline-block"></span>N. Crédito</div>
+                                </div>
+                            </div>
+                            <div class="relative h-52"><canvas id="chart-fact-evolucion"></canvas></div>
                         </div>
                     </div>
 
                     <!-- Right Column (Validations & Chart) -->
                     <div class="space-y-6">
                         <!-- Cuadratura -->
+                        <div class="bg-white rounded-xl border border-slate-200 p-5 shadow-sm">
+                            <h3 class="text-sm font-bold text-slate-700 flex items-center gap-2 mb-4">Validación de cuadratura <i class="ph-fill ph-check-circle text-green-500 text-lg"></i></h3>
+                            <div class="bg-green-50 border border-green-200 rounded-lg p-3 text-center mb-4" id="cuadratura-alert">
+                                <p class="text-sm font-bold text-green-700">¡Cuadratura exitosa!</p>
+                                <p class="text-xs text-green-600">La suma de registros coincide con el saldo.</p>
+                            </div>
+                            <div class="space-y-2 text-sm">
+                                <div class="flex justify-between text-slate-500"><span>Saldo declarado:</span> <span class="font-medium text-slate-800">$176,587,235.48</span></div>
+                                <div class="flex justify-between text-slate-500"><span>Total cargado:</span> <span class="font-medium text-slate-800">$176,587,235.48</span></div>
+                                <div class="flex justify-between border-t border-slate-100 pt-2"><span class="text-slate-500">Diferencia:</span> <span class="font-bold text-green-600">$0.00</span></div>
+                            </div>
+                        </div>
+
+                        <!-- Donut interactivo -->
+                        <div class="bg-white rounded-xl border border-slate-200 p-5 shadow-sm">
+                            <div class="flex justify-between items-start mb-3">
+                                <h3 class="text-sm font-bold text-slate-700">Distribución por documento</h3>
+                                <span class="text-[10px] text-indigo-500 font-semibold flex items-center gap-1"><i class="ph ph-cursor-click"></i> Clic para filtrar</span>
+                            </div>
+                            <div class="relative h-40 flex justify-center items-center">
+                                <canvas id="chart-facturacion"></canvas>
+                                <div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
+                                    <p class="text-[9px] text-slate-400 font-bold" id="fact-dona-label">Total</p>
+                                    <p class="text-sm font-black text-slate-800" id="fact-dona-value">$176.6M</p>
+                                </div>
+                            </div>
+                            <div class="mt-3 space-y-1.5 text-xs" id="fact-dona-legend"></div>
+                            <div id="fact-dona-filtro" class="hidden mt-2 flex items-center justify-between bg-indigo-50 border border-indigo-200 rounded-lg px-3 py-1.5">
+                                <span class="text-[10px] text-indigo-700 font-semibold" id="fact-dona-filtro-label"></span>
+                                <button onclick="limpiarFiltroFactDonut()" class="text-[10px] text-indigo-500 font-bold flex items-center gap-1">Quitar <i class="ph ph-x"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-6 flex items-start gap-2 bg-slate-100 rounded-lg p-3 border border-slate-200 text-xs text-slate-600">
+                    <i class="ph-fill ph-info text-indigo-500 text-lg shrink-0"></i>
+                    <p><strong>Nota:</strong> La plantilla de importación y el formato exacto de columnas se definirán durante la fase de análisis en conjunto con ISS, basados en el export actual de Navision.</p>
+                </div>
+            </div>
+
+            <!-- DRAWER: Facturación KPI -->
+            <div id="fact-drawer-overlay" onclick="closeFactDrawer()" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-40 hidden fade-in"></div>
+            <div id="fact-drawer" class="fixed top-0 right-0 h-full w-full max-w-lg bg-white shadow-2xl z-50 transform translate-x-full transition-transform duration-300 flex flex-col border-l border-slate-200">
+                <div class="p-5 border-b border-slate-200 flex items-center justify-between shrink-0">
+                    <div class="flex items-center gap-3">
+                        <div id="fact-drawer-icon" class="w-10 h-10 rounded-lg flex items-center justify-center text-xl"></div>
+                        <div><p class="text-[10px] text-slate-500 font-bold uppercase tracking-wider" id="fact-drawer-label">KPI</p><h3 class="text-lg font-black text-slate-800" id="fact-drawer-value">—</h3></div>
+                    </div>
+                    <button onclick="closeFactDrawer()" class="w-8 h-8 rounded-lg bg-slate-100 hover:bg-slate-200 flex items-center justify-center text-slate-500"><i class="ph-bold ph-x"></i></button>
+                </div>
+                <div id="fact-drawer-body" class="flex-1 overflow-y-auto p-5 space-y-5"></div>
+                <div id="fact-drawer-footer" class="p-4 border-t border-slate-200 bg-slate-50 shrink-0"></div>
+            </div>
+
+
                         <div class="bg-white rounded-xl border border-slate-200 p-5 shadow-sm">
                             <h3 class="text-sm font-bold text-slate-700 flex items-center gap-2 mb-4">Validación de cuadratura <i class="ph-fill ph-check-circle text-green-500 text-lg"></i></h3>
                             
@@ -403,24 +520,8 @@
                             </div>
                         </div>
 
-                        <!-- Donut Chart -->
-                        <div class="bg-white rounded-xl border border-slate-200 p-5 shadow-sm">
-                            <h3 class="text-sm font-bold text-slate-700 mb-4">Distribución por documento</h3>
-                            <div class="relative h-48 flex justify-center items-center">
-                                <canvas id="chart-facturacion"></canvas>
-                            </div>
-                            <div class="mt-4 space-y-2 text-xs">
-                                <div class="flex items-center justify-between"><div class="flex items-center"><span class="w-2.5 h-2.5 rounded-full bg-indigo-500 mr-2"></span>Facturas</div><span class="font-medium">$168,432,987.60</span></div>
-                                <div class="flex items-center justify-between"><div class="flex items-center"><span class="w-2.5 h-2.5 rounded-full bg-red-400 mr-2"></span>Notas Crédito</div><span class="font-medium text-red-600">-$8,154,247.88</span></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="mt-6 flex items-start gap-2 bg-slate-100 rounded-lg p-3 border border-slate-200 text-xs text-slate-600">
-                    <i class="ph-fill ph-info text-indigo-500 text-lg shrink-0"></i>
-                    <p><strong>Nota:</strong> La plantilla de importación y el formato exacto de columnas se definirán durante la fase de análisis en conjunto con ISS, basados en el export actual de Navision.</p>
-                </div>
-            </div>
+                        <!-- Nota -->
+                        <div class="hidden"><!-- old static donut replaced --></div>
 
             <!-- ================= VIEW: CONCILIACIÓN Y CANCELACIÓN ================= -->
             <div id="view-conciliacion" class="view-section hidden fade-in h-full flex flex-col">
@@ -565,10 +666,12 @@
                     <!-- Area de Carga (Sección 1) -->
                     <div class="xl:col-span-5 bg-white rounded-xl border border-slate-200 shadow-sm flex flex-col overflow-hidden">
                         <div class="flex border-b border-slate-200 bg-slate-50 px-2 pt-2">
-                            <button class="tab-btn active px-4 py-2 text-sm bg-white rounded-t-lg border border-b-0 border-slate-200 text-indigo-600 font-semibold relative top-px">Portafolio Fijo</button>
-                            <button class="tab-btn px-4 py-2 text-sm text-slate-500 hover:text-slate-700 hover:bg-slate-100/50 rounded-t-lg">Portafolio Variable (FUD)</button>
+                            <button id="tab-port-fijo" onclick="switchPortTab('fijo')" class="tab-btn active px-4 py-2 text-sm bg-white rounded-t-lg border border-b-0 border-slate-200 text-indigo-600 font-semibold relative top-px">Portafolio Fijo</button>
+                            <button id="tab-port-fud" onclick="switchPortTab('fud')" class="tab-btn px-4 py-2 text-sm text-slate-500 hover:text-slate-700 hover:bg-slate-100/50 rounded-t-lg">Portafolio Variable (FUD)</button>
                         </div>
-                        <div class="p-6 flex-1 flex flex-col">
+
+                        <!-- Panel Fijo -->
+                        <div id="panel-port-fijo" class="p-6 flex-1 flex flex-col">
                             <div id="drop-zone-port" class="flex-1 border-2 border-dashed border-slate-300 rounded-xl bg-slate-50 flex flex-col items-center justify-center p-8 transition-all relative group hover:border-indigo-400 hover:bg-indigo-50/30">
                                 <input type="file" id="file-upload-port" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-20" accept=".xlsx,.xls,.csv">
                                 
@@ -590,6 +693,41 @@
                                     <p id="progress-text" class="text-sm font-medium text-slate-700">Analizando estructura... 0%</p>
                                     <p class="text-xs text-slate-400 mt-1">Depurando job tasks duplicados</p>
                                 </div>
+                            </div>
+                        </div>
+                    </div>
+
+                        <!-- Panel FUD -->
+                        <div id="panel-port-fud" class="hidden flex-1 flex flex-col overflow-hidden">
+                            <div class="px-5 pt-4 pb-3 border-b border-slate-100 flex items-center justify-between shrink-0">
+                                <div>
+                                    <p class="text-xs font-bold text-slate-700">Portafolio Variable (FUD)</p>
+                                    <p class="text-[10px] text-slate-400 mt-0.5">Facturación Under Development — servicios pendientes de activación</p>
+                                </div>
+                                <span class="bg-teal-100 text-teal-700 text-[10px] font-bold px-2 py-0.5 rounded-full border border-teal-200">1,185 reg.</span>
+                            </div>
+                            <div class="grid grid-cols-3 gap-3 px-5 py-3 shrink-0">
+                                <div class="bg-teal-50 border border-teal-100 rounded-lg p-3 text-center"><p class="text-[9px] text-teal-700 font-bold uppercase mb-1">Monto FUD</p><p class="text-sm font-black text-teal-800">$35.3M</p></div>
+                                <div class="bg-amber-50 border border-amber-100 rounded-lg p-3 text-center"><p class="text-[9px] text-amber-700 font-bold uppercase mb-1">En Negociación</p><p class="text-sm font-black text-amber-800">$12.1M</p></div>
+                                <div class="bg-green-50 border border-green-100 rounded-lg p-3 text-center"><p class="text-[9px] text-green-700 font-bold uppercase mb-1">Activables</p><p class="text-sm font-black text-green-800">$23.2M</p></div>
+                            </div>
+                            <div class="px-5 pb-3 shrink-0">
+                                <div onclick="document.getElementById('file-upload-fud').click()" class="border-2 border-dashed border-teal-300 rounded-xl bg-teal-50/40 flex items-center justify-center py-4 px-6 gap-4 cursor-pointer hover:border-teal-500 hover:bg-teal-50 transition-colors relative">
+                                    <input type="file" id="file-upload-fud" class="hidden" accept=".xlsx,.xls,.csv" onchange="simFudUpload(this)">
+                                    <div id="fud-loading" class="hidden absolute inset-0 bg-white/90 rounded-xl flex items-center justify-center gap-2"><i class="ph ph-spinner animate-spin text-teal-600 text-xl"></i><p class="text-xs font-medium text-teal-700">Procesando FUD...</p></div>
+                                    <i class="ph ph-upload-simple text-2xl text-teal-500"></i>
+                                    <div><p class="text-xs font-bold text-teal-800">Cargar actualización FUD</p><p class="text-[10px] text-teal-600">Arrastra o haz clic · .xlsx / .csv</p></div>
+                                </div>
+                            </div>
+                            <div class="flex-1 overflow-auto border-t border-slate-100">
+                                <div class="px-3 py-2 bg-slate-50 border-b border-slate-100 flex gap-2 items-center">
+                                    <div class="relative flex-1"><i class="ph ph-magnifying-glass absolute left-2 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i><input type="text" id="filter-fud-search" onkeyup="filterFud()" placeholder="Buscar cliente o FUD ID..." class="pl-6 w-full text-[11px] border border-slate-200 rounded py-1"></div>
+                                    <select id="filter-fud-estado" onchange="filterFud()" class="text-[11px] border border-slate-200 rounded py-1"><option value="Todos">Todos</option><option value="Activable">Activable</option><option value="Negociación">Negociación</option><option value="Bloqueado">Bloqueado</option></select>
+                                </div>
+                                <table class="w-full text-[11px] text-left whitespace-nowrap">
+                                    <thead class="bg-white text-slate-500 font-medium sticky top-0 border-b border-slate-200 z-10"><tr><th class="px-3 py-2">FUD ID</th><th class="px-3 py-2">Cliente</th><th class="px-3 py-2">Servicio</th><th class="px-3 py-2 text-right">Monto</th><th class="px-3 py-2 text-center">Estado</th><th class="px-3 py-2">Vencimiento</th></tr></thead>
+                                    <tbody id="tbody-fud" class="divide-y divide-slate-100"></tbody>
+                                </table>
                             </div>
                         </div>
                     </div>
@@ -710,24 +848,25 @@
 
                     <!-- Gráficos y Panel Lateral Informativo -->
                     <div class="space-y-6">
-                        <!-- Chart -->
+                        <!-- Dona interactiva -->
                         <div class="bg-white rounded-xl border border-slate-200 p-5 shadow-sm">
-                            <h3 class="text-sm font-bold text-slate-700 mb-4">Distribución por Tipo de Servicio</h3>
+                            <div class="flex justify-between items-start mb-3">
+                                <h3 class="text-sm font-bold text-slate-700">Distribución por Tipo de Servicio</h3>
+                                <span class="text-[10px] text-indigo-500 font-semibold flex items-center gap-1"><i class="ph ph-cursor-click"></i> Clic para filtrar</span>
+                            </div>
                             <div class="relative h-48 flex justify-center items-center">
                                 <canvas id="chart-portafolio"></canvas>
+                                <div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
+                                    <p class="text-[9px] text-slate-400 font-bold uppercase" id="chart-port-center-label">Total</p>
+                                    <p class="text-base font-black text-slate-800" id="chart-port-center-value">$215.8M</p>
+                                </div>
                             </div>
-                            <div class="mt-4 space-y-2 text-xs">
-                                <div class="flex items-center justify-between">
-                                    <div class="flex items-center"><span class="w-2.5 h-2.5 rounded-full bg-indigo-500 mr-2"></span>Portafolio Fijo</div>
-                                    <span class="font-medium">$180,500,000.00</span>
-                                </div>
-                                <div class="flex items-center justify-between">
-                                    <div class="flex items-center"><span class="w-2.5 h-2.5 rounded-full bg-teal-400 mr-2"></span>Variable (FUD)</div>
-                                    <span class="font-medium">$35,345,120.00</span>
-                                </div>
+                            <div class="mt-3 space-y-1.5 text-xs" id="port-donut-legend"></div>
+                            <div id="port-donut-filtro" class="hidden mt-2 flex items-center justify-between bg-indigo-50 border border-indigo-200 rounded-lg px-3 py-1.5">
+                                <span class="text-[10px] text-indigo-700 font-semibold" id="port-donut-filtro-label"></span>
+                                <button onclick="limpiarFiltroDonut()" class="text-[10px] text-indigo-500 hover:text-indigo-700 font-bold flex items-center gap-1">Quitar <i class="ph ph-x"></i></button>
                             </div>
                         </div>
-
                         <!-- Panel de Reglas Informativas -->
                         <div class="bg-slate-50 rounded-xl border border-slate-200 p-5 shadow-sm">
                             <h3 class="text-sm font-bold text-slate-700 mb-3 flex items-center gap-2">
@@ -749,6 +888,41 @@
                             </ul>
                         </div>
                     </div>
+                </div>
+
+                <!-- Gráfica de Evolución con Filtros Interactivos -->
+                <div class="mt-6 bg-white rounded-xl border border-slate-200 p-5 shadow-sm">
+                    <div class="flex flex-wrap justify-between items-start gap-3 mb-3">
+                        <div>
+                            <h3 class="text-sm font-bold text-slate-700">Evolución del Portafolio Cargado</h3>
+                            <p class="text-[10px] text-slate-400 mt-0.5">Portafolio Total vs. Saldo sin Facturar · selecciona serie y período</p>
+                        </div>
+                        <div class="flex flex-wrap gap-2 items-center">
+                            <div class="flex gap-1 p-1 bg-slate-100 rounded-lg">
+                                <button id="toggle-serie-total" onclick="togglePortSerie('total')" class="px-3 py-1 text-[10px] font-bold rounded-md bg-indigo-600 text-white transition-all">Total</button>
+                                <button id="toggle-serie-saldo" onclick="togglePortSerie('saldo')" class="px-3 py-1 text-[10px] font-bold rounded-md bg-amber-400 text-white transition-all">Saldo</button>
+                                <button id="toggle-serie-regs"  onclick="togglePortSerie('regs')"  class="px-3 py-1 text-[10px] font-bold rounded-md bg-emerald-500 text-white transition-all">Registros</button>
+                            </div>
+                            <div class="flex gap-1 p-1 bg-slate-100 rounded-lg">
+                                <button id="rng-port-3"  onclick="setPortRango(3)"  class="px-3 py-1 text-[10px] font-bold rounded-md text-slate-500 hover:bg-white transition-all">3M</button>
+                                <button id="rng-port-6"  onclick="setPortRango(6)"  class="px-3 py-1 text-[10px] font-bold rounded-md bg-white text-indigo-600 shadow-sm transition-all">6M</button>
+                                <button id="rng-port-12" onclick="setPortRango(12)" class="px-3 py-1 text-[10px] font-bold rounded-md text-slate-500 hover:bg-white transition-all">12M</button>
+                            </div>
+                            <select id="port-evol-div" onchange="updatePortEvolChart()" class="text-[11px] border border-slate-200 rounded-lg px-2 py-1.5 bg-white">
+                                <option value="todas">Todas las divisiones</option>
+                                <option value="centro">MX Centro</option>
+                                <option value="norte">MX Norte</option>
+                                <option value="sur">MX Sur</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="flex gap-5 text-[10px] mb-3">
+                        <div class="flex items-center gap-1.5"><span class="w-3 h-0.5 bg-indigo-500 inline-block rounded"></span><span class="text-slate-500">Portafolio Total</span></div>
+                        <div class="flex items-center gap-1.5"><span class="w-3 h-0.5 bg-amber-400 inline-block rounded"></span><span class="text-slate-500">Saldo sin Facturar</span></div>
+                        <div class="flex items-center gap-1.5"><span class="w-3 h-0.5 bg-emerald-500 inline-block rounded"></span><span class="text-slate-500">Registros Válidos</span></div>
+                        <span id="port-evol-selected-badge" class="hidden ml-auto bg-indigo-50 border border-indigo-200 text-indigo-700 px-2 py-0.5 rounded-full font-bold text-[9px]"></span>
+                    </div>
+                    <div class="relative h-52"><canvas id="chart-port-evolucion"></canvas></div>
                 </div>
             </div>
 
@@ -3922,7 +4096,101 @@
         renderEvidenciasTable(mockEvidencias);
         renderCierreHistoryTable();
         // Start on Dashboard (uncomment next line to default to another view for testing)
-        // nav('facturacion'); 
+        // nav('facturacion');
+
+        // ============================================================
+        // PORTAFOLIO — Tab FUD, Dona interactiva, Gráfica Evolución
+        // ============================================================
+        const mockFud=[
+            {id:'FUD-2026-001',cliente:'BBVA México',  servicio:'Soporte N2 Cloud',    monto:8200000,estado:'Activable',  venc:'30/Jun/2026'},
+            {id:'FUD-2026-002',cliente:'Walmart',      servicio:'Help Desk Regional',   monto:5400000,estado:'Negociación',venc:'15/Jul/2026'},
+            {id:'FUD-2026-003',cliente:'Grupo Modelo', servicio:'Infraestructura DC',   monto:4100000,estado:'Activable',  venc:'30/Jun/2026'},
+            {id:'FUD-2026-004',cliente:'HSBC México',  servicio:'Cybersec Managed',     monto:3800000,estado:'Negociación',venc:'31/Jul/2026'},
+            {id:'FUD-2026-005',cliente:'Liverpool',    servicio:'Monitoreo 24x7',       monto:2900000,estado:'Activable',  venc:'30/Jun/2026'},
+            {id:'FUD-2026-006',cliente:'Chedraui',     servicio:'Field Service MX Sur', monto:2100000,estado:'Bloqueado', venc:'01/Jun/2026'},
+            {id:'FUD-2026-007',cliente:'Femsa',        servicio:'ERP Support Tier 1',   monto:3200000,estado:'Activable',  venc:'31/Jul/2026'},
+            {id:'FUD-2026-008',cliente:'Banorte',      servicio:'Data Center Co-Lo',    monto:4800000,estado:'Negociación',venc:'15/Ago/2026'},
+            {id:'FUD-2026-009',cliente:'OXXO',         servicio:'Redes WAN Sucursales', monto:1650000,estado:'Activable',  venc:'30/Jun/2026'},
+            {id:'FUD-2026-010',cliente:'Pemex',        servicio:'Seguridad Perimetral', monto:4900000,estado:'Bloqueado', venc:'15/May/2026'},
+        ];
+        function fudBadge(e){if(e==='Activable')return`<span class="bg-green-100 text-green-700 px-2 py-0.5 rounded-full text-[10px] font-bold border border-green-200">● Activable</span>`;if(e==='Negociación')return`<span class="bg-amber-100 text-amber-700 px-2 py-0.5 rounded-full text-[10px] font-bold border border-amber-200">● Negociación</span>`;return`<span class="bg-red-100 text-red-700 px-2 py-0.5 rounded-full text-[10px] font-bold border border-red-200">● Bloqueado</span>`;}
+        function renderFudTable(data){const tbody=document.getElementById('tbody-fud');if(!tbody)return;if(!data.length){tbody.innerHTML=`<tr><td colspan="6" class="px-3 py-6 text-center text-slate-400 text-xs">Sin resultados</td></tr>`;return;}tbody.innerHTML=data.map(r=>`<tr class="hover:bg-teal-50/30"><td class="px-3 py-2 font-mono text-[10px] text-teal-700 font-bold">${r.id}</td><td class="px-3 py-2 font-semibold text-slate-800">${r.cliente}</td><td class="px-3 py-2 text-slate-500">${r.servicio}</td><td class="px-3 py-2 text-right font-bold text-slate-700">${fmtMoney(r.monto)}</td><td class="px-3 py-2 text-center">${fudBadge(r.estado)}</td><td class="px-3 py-2 text-[10px] text-slate-500">${r.venc}</td></tr>`).join('');}
+        window.filterFud=function(){const s=(document.getElementById('filter-fud-search').value||'').toLowerCase();const e=document.getElementById('filter-fud-estado').value;renderFudTable(mockFud.filter(r=>(e==='Todos'||r.estado===e)&&(r.cliente.toLowerCase().includes(s)||r.id.toLowerCase().includes(s))));};
+        window.simFudUpload=function(input){if(!input.files.length)return;const l=document.getElementById('fud-loading');if(l)l.classList.remove('hidden');setTimeout(()=>{if(l)l.classList.add('hidden');alert(`✅ FUD actualizado.\n${input.files[0].name}\n10 registros procesados.`);input.value='';},1800);};
+        window.switchPortTab=function(tab){const isFijo=tab==='fijo';document.getElementById('panel-port-fijo').classList.toggle('hidden',!isFijo);document.getElementById('panel-port-fud').classList.toggle('hidden',isFijo);const ac='tab-btn active px-4 py-2 text-sm bg-white rounded-t-lg border border-b-0 border-slate-200 font-semibold relative top-px';const in_='tab-btn px-4 py-2 text-sm text-slate-500 hover:text-slate-700 hover:bg-slate-100/50 rounded-t-lg';document.getElementById('tab-port-fijo').className=isFijo?(ac+' text-indigo-600'):in_;document.getElementById('tab-port-fud').className=!isFijo?(ac+' text-teal-600'):in_;if(!isFijo)renderFudTable(mockFud);};
+
+        const portDonutData=[{label:'Portafolio Fijo',value:180500000,color:'#6366F1',tipo:'Fijo'},{label:'Variable (FUD)',value:35345120,color:'#2DD4BF',tipo:'Variable'},{label:'Above Base',value:18945000,color:'#FBBF24',tipo:'AboveBase'},{label:'Retroactivos',value:5900000,color:'#C084FC',tipo:'Retroactivo'}];
+        let portDonutChart=null;
+        function buildPortDonutLegend(){const el=document.getElementById('port-donut-legend');if(!el)return;const total=portDonutData.reduce((s,d)=>s+d.value,0);el.innerHTML=portDonutData.map((d,i)=>`<div onclick="filtrarPorDonut(${i})" class="flex items-center justify-between cursor-pointer hover:bg-slate-50 rounded-lg px-1 py-0.5 group"><div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full shrink-0" style="background:${d.color}"></span><span class="text-slate-600 group-hover:text-slate-800">${d.label}</span></div><div class="flex items-center gap-2"><span class="font-bold text-slate-800">${fmtMoney(d.value)}</span><span class="text-slate-400 w-9 text-right">${(d.value/total*100).toFixed(1)}%</span></div></div>`).join('');}
+        window.filtrarPorDonut=function(idx){const d=portDonutData[idx];if(portDonutChart){portDonutChart.data.datasets[0].backgroundColor=portDonutData.map((_,i)=>i===idx?portDonutData[i].color:portDonutData[i].color+'40');portDonutChart.update();}document.getElementById('chart-port-center-label').textContent=d.label;document.getElementById('chart-port-center-value').textContent=fmtMoney(d.value);document.getElementById('port-donut-filtro-label').textContent=`Filtrando: ${d.label}`;document.getElementById('port-donut-filtro').classList.remove('hidden');const sel=document.getElementById('filter-port-tipo');if(sel){sel.value=d.tipo==='Fijo'||d.tipo==='AboveBase'?'Fijo':'Variable';if(typeof filterPortafolio==='function')filterPortafolio();}};
+        window.limpiarFiltroDonut=function(){if(portDonutChart){portDonutChart.data.datasets[0].backgroundColor=portDonutData.map(d=>d.color);portDonutChart.update();}document.getElementById('chart-port-center-label').textContent='Total';document.getElementById('chart-port-center-value').textContent='$215.8M';document.getElementById('port-donut-filtro').classList.add('hidden');const sel=document.getElementById('filter-port-tipo');if(sel){sel.value='Todos';if(typeof filterPortafolio==='function')filterPortafolio();}};
+
+        const portEvolRaw={labels12:['May','Jun','Jul','Ago','Sep','Oct','Nov','Dic','Ene','Feb','Mar','Abr'],todas:{total:[198,201,203,205,207,208,208.5,212,210.8,213.2,214.5,215.8],saldo:[46.1,45.8,46.5,47.2,45.9,46.0,44.2,46.8,43.1,41.5,44.2,42.7],regs:[4.48,4.52,4.55,4.58,4.60,4.62,4.65,4.72,4.78,4.82,4.86,4.89]},centro:{total:[91,92,93,94,95,96,95.5,97.5,96.8,98.2,98.5,98.5],saldo:[21.1,20.8,21.5,21.9,21.0,21.1,20.2,21.5,19.8,19.0,20.1,19.5],regs:[2.05,2.07,2.09,2.10,2.12,2.14,2.15,2.18,2.20,2.22,2.24,2.26]},norte:{total:[66,67,68,69,69,70,69.5,71.5,70.8,71.2,72.5,72.2],saldo:[15.3,15.2,15.3,15.6,15.2,15.4,14.7,15.8,14.3,13.8,14.7,14.2],regs:[1.50,1.51,1.52,1.54,1.54,1.55,1.55,1.58,1.60,1.62,1.63,1.65]},sur:{total:[41,42,42,42,43,42,43.5,43,43.2,43.8,43.5,45.1],saldo:[9.7,9.8,9.7,9.7,9.7,9.5,9.3,9.5,9.0,8.7,9.4,9.0],regs:[0.93,0.94,0.94,0.94,0.94,0.93,0.95,0.96,0.98,0.98,0.99,0.98]}};
+        let portEvolChart=null,portEvolRango=6,portEvolSerieVisible={total:true,saldo:true,regs:true},portEvolDiv='todas';
+        function getPortSlice(){const src=portEvolRaw[portEvolDiv]||portEvolRaw.todas;const n=portEvolRango;return{labels:portEvolRaw.labels12.slice(-n),total:src.total.slice(-n),saldo:src.saldo.slice(-n),regs:src.regs.slice(-n)};}
+        function initPortEvolChart(){if(portEvolChart)return;const ctx=document.getElementById('chart-port-evolucion');if(!ctx)return;const s=getPortSlice();portEvolChart=new Chart(ctx,{type:'line',data:{labels:s.labels,datasets:[{label:'Total',data:s.total,borderColor:'#6366F1',backgroundColor:'rgba(99,102,241,0.08)',borderWidth:2.5,fill:true,tension:0.4,pointBackgroundColor:'#fff',pointBorderColor:'#6366F1',pointRadius:4,pointHoverRadius:7,yAxisID:'y'},{label:'Saldo',data:s.saldo,borderColor:'#FBBF24',backgroundColor:'transparent',borderWidth:2,borderDash:[5,3],fill:false,tension:0.4,pointBackgroundColor:'#fff',pointBorderColor:'#FBBF24',pointRadius:3,pointHoverRadius:6,yAxisID:'y'},{label:'Registros',data:s.regs,borderColor:'#10B981',backgroundColor:'rgba(16,185,129,0.06)',borderWidth:2,fill:false,tension:0.4,pointBackgroundColor:'#fff',pointBorderColor:'#10B981',pointRadius:3,pointHoverRadius:6,yAxisID:'y2'}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{position:'left',grid:{borderDash:[2,4],color:'#E2E8F0'},ticks:{font:{size:10},color:'#94A3B8',callback:v=>'$'+v+'M'}},y2:{position:'right',grid:{display:false},ticks:{font:{size:10},color:'#10B981',callback:v=>v+'k'}},x:{grid:{display:false},ticks:{font:{size:10},color:'#94A3B8'}}}}});}
+        window.updatePortEvolChart=function(){portEvolDiv=document.getElementById('port-evol-div').value;if(!portEvolChart){initPortEvolChart();return;}const s=getPortSlice();portEvolChart.data.labels=s.labels;portEvolChart.data.datasets[0].data=s.total;portEvolChart.data.datasets[1].data=s.saldo;portEvolChart.data.datasets[2].data=s.regs;portEvolChart.data.datasets.forEach((d,i)=>{d.hidden=!Object.values(portEvolSerieVisible)[i];});portEvolChart.update();const badge=document.getElementById('port-evol-selected-badge');if(portEvolDiv!=='todas'){badge.textContent={centro:'MX Centro',norte:'MX Norte',sur:'MX Sur'}[portEvolDiv];badge.classList.remove('hidden');}else badge.classList.add('hidden');};
+        window.setPortRango=function(n){portEvolRango=n;['3','6','12'].forEach(r=>{const btn=document.getElementById('rng-port-'+r);if(btn)btn.className=`px-3 py-1 text-[10px] font-bold rounded-md transition-all ${parseInt(r)===n?'bg-white text-indigo-600 shadow-sm':'text-slate-500 hover:bg-white'}`;});updatePortEvolChart();};
+        window.togglePortSerie=function(serie){portEvolSerieVisible[serie]=!portEvolSerieVisible[serie];const btn=document.getElementById('toggle-serie-'+serie);const on=portEvolSerieVisible[serie];const col={total:'bg-indigo-600 text-white',saldo:'bg-amber-400 text-white',regs:'bg-emerald-500 text-white'};if(btn)btn.className=`px-3 py-1 text-[10px] font-bold rounded-md transition-all ${on?col[serie]:'bg-slate-200 text-slate-400 line-through'}`;updatePortEvolChart();};
+
+        // Init portafolio charts on nav
+        const _navPort=window.nav;
+        window.nav=function(viewId){_navPort(viewId);if(viewId==='portafolio'){setTimeout(()=>{const ctx=document.getElementById('chart-portafolio');if(ctx&&!portDonutChart){portDonutChart=new Chart(ctx,{type:'doughnut',data:{labels:portDonutData.map(d=>d.label),datasets:[{data:portDonutData.map(d=>d.value),backgroundColor:portDonutData.map(d=>d.color),borderWidth:0,hoverOffset:8}]},options:{responsive:true,maintainAspectRatio:false,cutout:'72%',plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>`${c.label}: ${fmtMoney(c.raw)}`}}},onClick(evt,elements){if(elements.length)filtrarPorDonut(elements[0].index);else limpiarFiltroDonut();}}});}buildPortDonutLegend();initPortEvolChart();},120);}};
+        renderFudTable(mockFud);
+
+        // ============================================================
+        // FACTURACIÓN — Tabs, Drawer, Dona interactiva, Evolución
+        // ============================================================
+        const factDonutData=[{label:'Facturas (Invoice)',value:168432987.60,color:'#6366F1'},{label:'Notas de Crédito',value:8154247.88,color:'#F87171'}];
+        let factDonutChart=null,factEvolChart=null,factEvolRango=6,factKpiChartInst=null;
+        const mockFactDetalle=[
+            {doc:'INV-2026-04-00123',cliente:'BBVA México', tipo:'Invoice',fecha:'02/Abr/2026',div:'MX Centro',monto:12450000,estado:'Conciliado'},
+            {doc:'INV-2026-04-00124',cliente:'Walmart',     tipo:'Invoice',fecha:'02/Abr/2026',div:'MX Norte', monto:9870000, estado:'Conciliado'},
+            {doc:'CRN-2026-04-00031',cliente:'Grupo Modelo',tipo:'Credit', fecha:'03/Abr/2026',div:'MX Centro',monto:-1250000,estado:'Aplicada'},
+            {doc:'INV-2026-04-00125',cliente:'HSBC México', tipo:'Invoice',fecha:'04/Abr/2026',div:'MX Centro',monto:8920000, estado:'Conciliado'},
+            {doc:'INV-2026-04-00126',cliente:'Liverpool',   tipo:'Invoice',fecha:'05/Abr/2026',div:'MX Norte', monto:5430000, estado:'Pendiente'},
+            {doc:'CRN-2026-04-00032',cliente:'BBVA México', tipo:'Credit', fecha:'06/Abr/2026',div:'MX Centro',monto:-980000, estado:'Aplicada'},
+            {doc:'INV-2026-04-00127',cliente:'Femsa',       tipo:'Invoice',fecha:'08/Abr/2026',div:'MX Sur',   monto:4100000, estado:'Conciliado'},
+            {doc:'INV-2026-04-00128',cliente:'Banorte',     tipo:'Invoice',fecha:'10/Abr/2026',div:'MX Centro',monto:7200000, estado:'Conciliado'},
+            {doc:'CRN-2026-04-00033',cliente:'Walmart',     tipo:'Credit', fecha:'12/Abr/2026',div:'MX Norte', monto:-2150000,estado:'Aplicada'},
+            {doc:'INV-2026-04-00129',cliente:'Grupo Modelo',tipo:'Invoice',fecha:'15/Abr/2026',div:'MX Sur',   monto:6780000, estado:'Conciliado'},
+            {doc:'INV-2026-04-00130',cliente:'OXXO',        tipo:'Invoice',fecha:'18/Abr/2026',div:'MX Norte', monto:3200000, estado:'Pendiente'},
+            {doc:'CRN-2026-04-00034',cliente:'Liverpool',   tipo:'Credit', fecha:'20/Abr/2026',div:'MX Norte', monto:-520000, estado:'Aplicada'},
+        ];
+        const mockFactClientes=[
+            {cliente:'BBVA México', div:'MX Centro',facturas:42450800,credito:-1200000,tendencia:'▲ +3.1%'},
+            {cliente:'Walmart',     div:'MX Norte', facturas:35120600,credito:-2150000,tendencia:'▲ +6.4%'},
+            {cliente:'Grupo Modelo',div:'MX Sur',   facturas:28950000,credito:-1250000,tendencia:'▼ -1.2%'},
+            {cliente:'HSBC México', div:'MX Centro',facturas:22100400,credito:-980000, tendencia:'▲ +2.8%'},
+            {cliente:'Liverpool',   div:'MX Norte', facturas:15380200,credito:-520000, tendencia:'▼ -0.5%'},
+            {cliente:'Femsa',       div:'MX Sur',   facturas:12800000,credito:0,       tendencia:'▲ +4.2%'},
+            {cliente:'Banorte',     div:'MX Centro',facturas:10200000,credito:-54000,  tendencia:'▲ +1.1%'},
+            {cliente:'OXXO',        div:'MX Norte', facturas:8430987, credito:0,       tendencia:'▲ +0.8%'},
+        ];
+        const factEvolRaw={labels12:['May','Jun','Jul','Ago','Sep','Oct','Nov','Dic','Ene','Feb','Mar','Abr'],total:[158.2,161.5,159.8,163.4,165.0,167.2,162.8,170.1,158.4,165.1,170.3,176.6],fact:[150.5,153.8,152.1,155.7,157.3,159.4,155.0,162.0,151.0,157.3,162.4,168.4],cred:[7.7,7.7,7.7,7.7,7.7,7.8,7.8,8.1,7.4,7.8,7.9,8.2]};
+        const factKpiConfig={
+            total:{label:'Total Facturación',value:'$176,587,235.48',icon:'ph ph-receipt',iconBg:'bg-indigo-50 text-indigo-600',color:'#6366F1',kpis:[{l:'Facturas',v:'$168,432,987.60',p:'95.4%',c:'bg-indigo-500'},{l:'Notas de Crédito',v:'-$8,154,247.88',p:'4.6%',c:'bg-red-400'},{l:'Var. vs anterior',v:'+$8,740,000',p:'5.2%',c:'bg-green-500'}],tabla:{titulo:'Top 5 Clientes',cols:['Cliente','Monto','% Total'],rows:[['BBVA México','$42,450,800','24.0%'],['Walmart','$35,120,600','19.9%'],['Grupo Modelo','$28,950,000','16.4%'],['HSBC México','$22,100,400','12.5%'],['Liverpool','$15,380,200','8.7%']]},mini:[158.2,161.5,159.8,163.4,165.0,176.6]},
+            invoices:{label:'Facturas (Invoices)',value:'$168,432,987.60',icon:'ph ph-money',iconBg:'bg-green-50 text-green-600',color:'#22C55E',kpis:[{l:'MX Centro',v:'$82,100,000',p:'48.7%',c:'bg-indigo-500'},{l:'MX Norte',v:'$55,400,000',p:'32.9%',c:'bg-teal-400'},{l:'MX Sur',v:'$30,932,987',p:'18.4%',c:'bg-amber-400'}],tabla:{titulo:'Por División',cols:['División','Monto','%'],rows:[['MX Centro','$82,100,000','48.7%'],['MX Norte','$55,400,000','32.9%'],['MX Sur','$30,932,987','18.4%']]},mini:[150.5,153.8,152.1,155.7,157.3,168.4]},
+            registros:{label:'Registros Cargados',value:'12,875',icon:'ph ph-list-numbers',iconBg:'bg-blue-50 text-blue-600',color:'#3B82F6',kpis:[{l:'Carga V3',v:'4,532',p:'35.2%',c:'bg-indigo-500'},{l:'Carga V2',v:'4,218',p:'32.8%',c:'bg-teal-400'},{l:'Carga V1',v:'4,125',p:'32.0%',c:'bg-amber-400'}],tabla:{titulo:'Historial',cols:['Versión','Fecha','Registros'],rows:[['V3','19/May/2026','4,532'],['V2','15/May/2026','4,218'],['V1','12/May/2026','4,125']]},mini:[11200,11450,11600,11800,12100,12875]},
+            credito:{label:'Notas de Crédito',value:'-$8,154,247.88',icon:'ph ph-file-minus',iconBg:'bg-red-50 text-red-600',color:'#EF4444',kpis:[{l:'Devoluciones',v:'-$4,200,000',p:'51.5%',c:'bg-red-500'},{l:'Ajustes precio',v:'-$2,800,000',p:'34.3%',c:'bg-orange-400'},{l:'Descuentos',v:'-$1,154,247',p:'14.2%',c:'bg-amber-400'}],tabla:{titulo:'Top Notas',cols:['Cliente','Concepto','Monto'],rows:[['Walmart','Devolución servicio','$2,150,000'],['Grupo Modelo','Descuento volumen','$1,250,000'],['BBVA México','Ajuste precio','$1,200,000']]},mini:[7.2,7.4,7.5,7.6,7.8,8.2]},
+        };
+
+        function buildFactDonutLegend(){const el=document.getElementById('fact-dona-legend');if(!el)return;el.innerHTML=factDonutData.map((d,i)=>`<div onclick="filtrarFactDonut(${i})" class="flex items-center justify-between cursor-pointer hover:bg-slate-50 rounded-lg px-1 py-0.5 group"><div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full shrink-0" style="background:${d.color}"></span><span class="text-slate-600 group-hover:text-slate-800">${d.label}</span></div><span class="font-bold text-slate-700 ml-2">${fmtMoney(Math.abs(d.value))}</span></div>`).join('');}
+        window.filtrarFactDonut=function(idx){const d=factDonutData[idx];if(factDonutChart){factDonutChart.data.datasets[0].backgroundColor=factDonutData.map((_,i)=>i===idx?factDonutData[i].color:factDonutData[i].color+'40');factDonutChart.update();}document.getElementById('fact-dona-label').textContent=d.label;document.getElementById('fact-dona-value').textContent=fmtMoney(Math.abs(d.value));document.getElementById('fact-dona-filtro-label').textContent=`Filtrando: ${d.label}`;document.getElementById('fact-dona-filtro').classList.remove('hidden');const sel=document.getElementById('fact-det-tipo');if(sel){sel.value=idx===0?'Invoice':'Credit';switchFactTab('detalle');filterFactDetalle();}};
+        window.limpiarFiltroFactDonut=function(){if(factDonutChart){factDonutChart.data.datasets[0].backgroundColor=factDonutData.map(d=>d.color);factDonutChart.update();}document.getElementById('fact-dona-label').textContent='Total';document.getElementById('fact-dona-value').textContent='$176.6M';document.getElementById('fact-dona-filtro').classList.add('hidden');const sel=document.getElementById('fact-det-tipo');if(sel){sel.value='Todos';filterFactDetalle();}};
+        window.switchFactTab=function(tab){['historial','detalle','clientes','evolucion'].forEach(t=>{const p=document.getElementById('fact-panel-'+t);if(p)p.classList.toggle('hidden',t!==tab);const b=document.getElementById('fact-tab-'+t);if(b){const on=t===tab;b.className=`tab-btn ${on?'active ':''} text-sm pb-4 -mb-4 ${on?'text-indigo-600 font-semibold border-b-2 border-indigo-600':'text-slate-500 hover:text-slate-700'}`;}});if(tab==='evolucion'&&!factEvolChart)initFactEvolChart();if(tab==='detalle')renderFactDetalleTable(mockFactDetalle);if(tab==='clientes')renderFactClientesTable();};
+        window.filterFactDetalle=function(){const tipo=(document.getElementById('fact-det-tipo')||{}).value||'Todos';const cli=(document.getElementById('fact-det-cliente')||{}).value||'Todos';const s=((document.getElementById('fact-det-search')||{}).value||'').toLowerCase();renderFactDetalleTable(mockFactDetalle.filter(r=>(tipo==='Todos'||r.tipo===tipo)&&(cli==='Todos'||r.cliente===cli)&&(r.doc.toLowerCase().includes(s)||r.cliente.toLowerCase().includes(s))));};
+        function renderFactDetalleTable(data){const tbody=document.getElementById('tbody-fact-detalle');if(!tbody)return;if(!data.length){tbody.innerHTML=`<tr><td colspan="7" class="px-4 py-6 text-center text-slate-400 text-xs">Sin resultados</td></tr>`;return;}tbody.innerHTML=data.map(r=>{const isCr=r.tipo==='Credit';const eb=r.estado==='Conciliado'?'bg-green-100 text-green-700 border-green-200':r.estado==='Aplicada'?'bg-slate-100 text-slate-600 border-slate-200':'bg-amber-100 text-amber-700 border-amber-200';return`<tr class="hover:bg-slate-50 ${isCr?'bg-red-50/20':''}"><td class="px-4 py-2 font-mono text-[10px] text-slate-700">${r.doc}</td><td class="px-4 py-2 font-semibold text-slate-800">${r.cliente}</td><td class="px-4 py-2"><span class="px-2 py-0.5 rounded text-[10px] font-bold ${isCr?'bg-red-100 text-red-700':'bg-indigo-100 text-indigo-700'}">${isCr?'N. Crédito':'Factura'}</span></td><td class="px-4 py-2 text-slate-500">${r.fecha}</td><td class="px-4 py-2 text-slate-500">${r.div}</td><td class="px-4 py-2 text-right font-bold ${isCr?'text-red-600':'text-slate-800'}">${fmtMoney(r.monto)}</td><td class="px-4 py-2 text-center"><span class="px-2 py-0.5 rounded text-[10px] font-bold border ${eb}">${r.estado}</span></td></tr>`;}).join('');}
+        function renderFactClientesTable(){const tbody=document.getElementById('tbody-fact-clientes');if(!tbody)return;const totalNeto=mockFactClientes.reduce((s,r)=>s+r.facturas+r.credito,0);tbody.innerHTML=mockFactClientes.map(r=>{const neto=r.facturas+r.credito;const pct=(neto/totalNeto*100).toFixed(1);const up=r.tendencia.startsWith('▲');return`<tr class="hover:bg-slate-50"><td class="px-4 py-2.5 font-bold text-slate-800">${r.cliente}</td><td class="px-4 py-2.5 text-slate-500">${r.div}</td><td class="px-4 py-2.5 text-right text-slate-700">${fmtMoney(r.facturas)}</td><td class="px-4 py-2.5 text-right text-red-600">${r.credito?fmtMoney(r.credito):'—'}</td><td class="px-4 py-2.5 text-right font-bold text-indigo-600">${fmtMoney(neto)}</td><td class="px-4 py-2.5 text-center"><div class="flex items-center gap-1.5 justify-center"><div class="w-16 bg-slate-100 rounded-full h-1.5"><div class="h-1.5 rounded-full bg-indigo-500" style="width:${pct}%"></div></div><span class="text-[10px] text-slate-600">${pct}%</span></div></td><td class="px-4 py-2.5 text-center text-[11px] font-bold ${up?'text-green-600':'text-red-500'}">${r.tendencia}</td></tr>`;}).join('');}
+        function initFactEvolChart(){if(factEvolChart)return;const ctx=document.getElementById('chart-fact-evolucion');if(!ctx)return;factEvolChart=new Chart(ctx,{type:'line',data:{labels:factEvolRaw.labels12.slice(-factEvolRango),datasets:[{label:'Total',data:factEvolRaw.total.slice(-factEvolRango),borderColor:'#6366F1',backgroundColor:'rgba(99,102,241,0.08)',borderWidth:2.5,fill:true,tension:0.4,pointBackgroundColor:'#fff',pointBorderColor:'#6366F1',pointRadius:4,pointHoverRadius:7},{label:'Facturas',data:factEvolRaw.fact.slice(-factEvolRango),borderColor:'#22C55E',backgroundColor:'transparent',borderWidth:2,fill:false,tension:0.4,pointBackgroundColor:'#fff',pointBorderColor:'#22C55E',pointRadius:3,pointHoverRadius:6},{label:'N.Crédito',data:factEvolRaw.cred.slice(-factEvolRango),borderColor:'#F87171',backgroundColor:'transparent',borderWidth:2,borderDash:[4,3],fill:false,tension:0.4,pointBackgroundColor:'#fff',pointBorderColor:'#F87171',pointRadius:3,pointHoverRadius:6}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>` ${c.dataset.label}: $${c.raw}M`}}},scales:{y:{grid:{borderDash:[2,4],color:'#E2E8F0'},ticks:{font:{size:10},color:'#94A3B8',callback:v=>'$'+v+'M'}},x:{grid:{display:false},ticks:{font:{size:10},color:'#94A3B8'}}}}});}
+        window.setFactRango=function(n){factEvolRango=n;['3','6','12'].forEach(r=>{const btn=document.getElementById('fact-rng-'+r);if(btn)btn.className=`px-3 py-1 text-[10px] font-bold rounded-md transition-all ${parseInt(r)===n?'bg-white text-indigo-600 shadow-sm':'text-slate-500 hover:bg-white'}`;});if(factEvolChart){factEvolChart.data.labels=factEvolRaw.labels12.slice(-n);factEvolChart.data.datasets[0].data=factEvolRaw.total.slice(-n);factEvolChart.data.datasets[1].data=factEvolRaw.fact.slice(-n);factEvolChart.data.datasets[2].data=factEvolRaw.cred.slice(-n);factEvolChart.update();}};
+        window.openFactDrawer=function(tipo){const cfg=factKpiConfig[tipo];if(!cfg)return;document.getElementById('fact-drawer-icon').className=`w-10 h-10 rounded-lg flex items-center justify-center text-xl ${cfg.iconBg}`;document.getElementById('fact-drawer-icon').innerHTML=`<i class="${cfg.icon}"></i>`;document.getElementById('fact-drawer-label').textContent=cfg.label;document.getElementById('fact-drawer-value').textContent=cfg.value;document.getElementById('fact-drawer-body').innerHTML=`<div class="bg-white rounded-xl border border-slate-200 p-4 shadow-sm"><h4 class="text-xs font-bold text-slate-700 mb-4">Desglose</h4><div class="space-y-3.5">${cfg.kpis.map(k=>`<div><div class="flex justify-between items-end mb-1.5"><span class="text-[11px] text-slate-600">${k.l}</span><div><span class="text-xs font-bold text-slate-800">${k.v}</span><span class="text-[10px] text-slate-400 ml-1">${k.p}</span></div></div><div class="w-full bg-slate-100 rounded-full h-2"><div class="h-2 rounded-full ${k.c}" style="width:${k.p}"></div></div></div>`).join('')}</div></div><div class="bg-white rounded-xl border border-slate-200 p-4 shadow-sm"><h4 class="text-xs font-bold text-slate-700 mb-3">Evolución 6 meses</h4><div class="relative h-36"><canvas id="chart-fact-kpi-mini"></canvas></div></div><div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden"><div class="p-3 bg-slate-50 border-b border-slate-200"><h4 class="text-xs font-bold text-slate-700">${cfg.tabla.titulo}</h4></div><table class="w-full text-[11px] text-left"><thead class="bg-white border-b border-slate-100 text-slate-500"><tr>${cfg.tabla.cols.map(c=>`<th class="px-3 py-2 font-medium">${c}</th>`).join('')}</tr></thead><tbody class="divide-y divide-slate-50">${cfg.tabla.rows.map((row,i)=>`<tr class="hover:bg-slate-50 ${i%2?'bg-slate-50/40':''}">${row.map((cell,ci)=>`<td class="px-3 py-2 ${ci===0?'font-semibold text-slate-800':'text-slate-600'}">${cell}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`;document.getElementById('fact-drawer-footer').innerHTML=`<div class="flex justify-between items-center"><p class="text-[10px] text-slate-400">Datos al cierre de Abril 2026</p><button onclick="closeFactDrawer()" class="px-4 py-2 text-xs font-bold text-white bg-indigo-600 rounded-lg hover:bg-indigo-700">Cerrar</button></div>`;document.getElementById('fact-drawer-overlay').classList.remove('hidden');document.getElementById('fact-drawer').classList.remove('translate-x-full');setTimeout(()=>{const mCtx=document.getElementById('chart-fact-kpi-mini');if(!mCtx)return;if(factKpiChartInst){factKpiChartInst.destroy();factKpiChartInst=null;}factKpiChartInst=new Chart(mCtx,{type:'line',data:{labels:['Nov','Dic','Ene','Feb','Mar','Abr'],datasets:[{data:cfg.mini,borderColor:cfg.color,backgroundColor:cfg.color+'18',borderWidth:2,fill:true,tension:0.4,pointBackgroundColor:'#fff',pointBorderColor:cfg.color,pointRadius:3,pointHoverRadius:6}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{grid:{color:'#F1F5F9'},ticks:{font:{size:9},color:'#94A3B8'}},x:{grid:{display:false},ticks:{font:{size:9},color:'#94A3B8'}}}}});},80);};
+        window.closeFactDrawer=function(){document.getElementById('fact-drawer').classList.add('translate-x-full');document.getElementById('fact-drawer-overlay').classList.add('hidden');if(factKpiChartInst){factKpiChartInst.destroy();factKpiChartInst=null;}};
+
+        // Init dona facturacion on nav
+        const _navFact=window.nav;
+        window.nav=function(viewId){_navFact(viewId);if(viewId==='facturacion'){setTimeout(()=>{const ctx=document.getElementById('chart-facturacion');if(ctx&&!factDonutChart){factDonutChart=new Chart(ctx,{type:'doughnut',data:{labels:factDonutData.map(d=>d.label),datasets:[{data:factDonutData.map(d=>Math.abs(d.value)),backgroundColor:factDonutData.map(d=>d.color),borderWidth:0,hoverOffset:8}]},options:{responsive:true,maintainAspectRatio:false,cutout:'72%',plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>`${c.label}: ${fmtMoney(c.raw)}`}}},onClick(evt,elements){if(elements.length)filtrarFactDonut(elements[0].index);else limpiarFiltroFactDonut();}}});}buildFactDonutLegend();},120);}};
+
     </script>
 </body>
 </html>
